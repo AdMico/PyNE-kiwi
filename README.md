@@ -1,4 +1,4 @@
-# PyNE-probe documentation (v1.0.0) -- Adam to update
+# PyNE-kiwi documentation (v1.0.0) -- Adam to update
 
 A package for simple electrical measurements using the National Instruments (NI) VISA standard. Developed by Jakob Seidl and coworkers at the Nanoelectronics group at the University of New South Wales, Sydney. It was originally written in Python 2.7 and later adapted for modern Python 3.
 

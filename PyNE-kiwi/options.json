@@ -1,0 +1,17 @@
+{
+    "LI": {
+        "autoSensitivity": false, 
+        "frequency": 94.65, 
+        "input": "I1", 
+        "scaleFactor": 1, 
+        "senseLevel": [
+            -3.43904e-12, 
+            -3.50783e-10
+        ], 
+        "senseRange": 0.0005, 
+        "sourceLevel": 0.004, 
+        "sweepDelay": 0.5, 
+        "sweepParameter": "amplitude", 
+        "timeConst": 0.03
+    }
+}

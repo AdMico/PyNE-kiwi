@@ -1,0 +1,117 @@
+\chapter{Instruments, Functions and Ranges}
+
+\lettrine[lines=2]{\color{blue}\textsf{I}}{}n this chapter, we will introduce all available instruments with their unique options and measurement ranges. It may hopefully provide a useful day to day companion when coding your control file. All the properties with their \texttt{"key"} are accessible via the \texttt{instrument.set("key",value)} or \texttt{instrument.setOptions($\lbrace$"key1":value1, "key2":value2 $\rbrace $} functions.
+
+\section{Keithley 2401}
+
+\textbf{\textsf{Short description}:} Keithley source-measure unit. Is able to source a voltage/current while reading the current/voltage that it puts out at the same time. Standard unit in the fishtank lab.\\
+\textbf{\textsf{Setter or reader}:} Both\\
+\textbf{\textsf{Sourcemode} (\texttt{"sourceMode"}):} Selects the current or voltage sourcemode. Also internally sets the senseMode: The K2401 will measure current when sourcing voltage and vice versa.\\
+\textbf{\textsf{Source ranges} (\texttt{"sourceRange"}):}
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Voltage:}} [20, 10, 1, 0.1, 0.01, 0.001] V\\
+\item \textbf{\textsf{Current:}} [1, 0.1, 0.01, 0.001, \SI{1E-4}, \SI{1E-5}, \SI{1E-6}] A\\
+\end{itemize}
+\textbf{\textsf{Sense/Measurement ranges} (\texttt{"senseRange"}):}
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Sensing voltage:}} [21.00, 2.10, 0.21] V\\
+\item \textbf{\textsf{Sensing current:}} [\SI{1.05E-4}, \SI{1.05E-5}, \SI{1.05E-6}] A
+\end{itemize}
+The current sensing ranges go even higher (will be implemented soon), just remember that you might have to increase the compliance if you'd like to increase the sensing range - they are linked (see below in the compliance section).\\
+\textbf{\textsf{Compliance} (\texttt{"compliance"}):}
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Sensing current:}} [\SI{1.0E-9}, \SI{1.0E-8}, \SI{1.0E-7}] $\rightarrow$ 1.05$\;$A. \\
+\item \textbf{\textsf{Sensing voltage:}} [\SI{0.2E-3}, \SI{2E-3}, 0.02] $\rightarrow$ 21$\;$V.\\
+\end{itemize}
+Note, the "senseRange" limits the lower compliance bounds and thus three values are given each, i.e. [lowerBound1, lowerBound2, etc.] $\rightarrow$ upperBound.\\
+\\
+\textbf{\textsf{Beep enable} (\texttt{"beepEnable"}):} Boolean. Enables (True) or disables (False) the annoying Keithley beep when an error occurs. Important when debugging.\\
+\textbf{\textsf{Output enable} (\texttt{"outputEnable"}}): Boolean. Enables (True) or disables (False) source output. Reading the instrument with output off will result in an error since the instrument is basically off.\\
+\textbf{\textsf{Scale factor} (\texttt{"scaleFactor"}}): You can introduce an additional scale factor if you use e.g. a current to voltage amplifier with a known amplification. The instrument will put out the measured value divided by the scale factor. By default, this factor is 1.
+
+\section{Keithley 6517A Electrometer }
+
+\textbf{\textsf{Short description}:} Keithley electrometer/High resistance meter. Able to precisely measure currents down to the few pA range. \\
+\textbf{\textsf{Setter or reader}:} Reader only (for now).\\
+\textbf{\textsf{Sensemode} (\texttt{"senseMode"}):} Selects the current or voltage sensing mode.\\
+\textbf{\textsf{Sense/Measurement ranges} (\texttt{"senseRange"}):}
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Sensing voltage:}} [2, 20, 200] V\\
+\item \textbf{\textsf{Sensing current:}} [\SI{20E-12}, \SI{200E-12}, \SI{2E-9}, \SI{20E-9}, \SI{200E-9}, \SI{2E-6}, \SI{20E-6}, \SI{200E-6}, \SI{2E-3}, \SI{20E-3}] A
+\end{itemize}
+\textbf{\textsf{Zerocheck} (\texttt{"zeroCheck"}):} Boolean. Enables (True) or disables (False) zerocheck option on the electrometer. Zerocheck basically put a large resistor in line with the measurement line when enabled, thus decreasing the current flow and mitigating possible damage to the sensitive instrument.\\
+\textbf{\textsf{Autorange} (\texttt{"autoRange"}):} Boolean. Enables (True) or disables (False) the autorange pyNE function.\\
+
+\section{Yokogawa GS200}
+
+\textbf{\textsf{Short description}:} Power supply known for its low noise. No real measure capabilities. \\
+\textbf{\textsf{Setter or reader}:} Setter only.\\
+\textbf{\textsf{Sourcemode} (\texttt{"sourceMode"}):} Selects the current or voltage sourcing mode.\\
+\textbf{\textsf{Source ranges} (\texttt{"sourceRange"}):}
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Sourcing voltage:}} [0.01, 0.1, 1, 10, 30] V\\
+\item \textbf{\textsf{Sourcing current:}} [0.001, 0.01, 0.1, 0.2] A
+\end{itemize}
+\textbf{\textsf{Compliance} (\texttt{"compliance"}):}
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Sourcing voltage:}} 0.001 $\rightarrow$ 0.1$\;$A\\
+\item \textbf{\textsf{Sourcing current/sensing voltage:}} 1 $\rightarrow$ 30$\;$V
+\end{itemize}
+The YokogawaGS200 only accepts current protection for the 30, 10 and 1$\,$V voltage ranges.\\
+
+\section{SR(S)830 Lock-In Amplifier}
+
+\textbf{\textsf{Short description}:} Lock-in amplifier with a oscillator frequency of up to ca. 100kHz.\\
+\textbf{\textsf{Setter or reader}:} Can act as both.\\
+\textbf{\textsf{Time constant} (\texttt{"timeConst"}):} Sets the time constant over which the lock-in integrates.\\
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Possible time constants:}} [\SI{10E-6}, \SI{30E-6}, \SI{100E-6},\SI{300E-6}, \SI{1E-3}, \SI{3E-3}, \SI{10E-3}, \SI{30E-3}, \SI{100E-3},\SI{300E-3},1, 3, 10, 30, 100, 300] seconds.
+\end{itemize}
+\textbf{\textsf{Sensitivity} (\texttt{"senseRange"}):} Sets the sensitivity of the measurement circuitry.\\
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Sensitivities}:} [\SI{1E-9}, \SI{2E-9}, \SI{5E-9}, \SI{10E-9}, \SI{20E-9}, \SI{50E-9}, \SI{100E-9}, \SI{200E-9}, \SI{500E-9}, \SI{1E-6}, \SI{2E-6}, \SI{5E-6}, \SI{10E-6}, \SI{20E-6}, \SI{50E-6}, \SI{100E-6}, \SI{200E-6}, \SI{500E-6}, \SI{1E-3}, \SI{2E-3}, \SI{5E-3}, \SI{10E-3}, \SI{20E-3}, \SI{50E-3}, \SI{100E-3}, \SI{200E-3}, \SI{500E-3}, 1] V/$\mu$A.
+\end{itemize}
+Note that the user input always refers to the voltage input, i.e., the voltage scale used. The conversion between current and voltage scale is: current scale = voltage scale $\times 10^{-6}$\\
+\\
+\textbf{\textsf{Input} (\texttt{"input"}):} Sets the input used for the amplifier. In general, the lock-in can either measure voltage or current. There are two current inputs with different amplification factors ($10^6$, $10^8$) as well as a normal and a differential ('A-B') voltage measurement.\\
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Available inputs:}} ['A', 'A-B', 'I1', 'I2'].
+\end{itemize}
+\textbf{\textsf{Frequency} (\texttt{"frequency"}):} Changes the frequency of the sine wave excitation output. Must be in [1, 100 000] Hz.\\
+\textbf{\textsf{Amplitude} (\texttt{"amplitude"}):} Changes the amplitude of the sine wave excitation output. Must be in [0.004, 1] V.\\
+\textbf{\textsf{Sweep parameter} (\texttt{"sweepParameter"}):} This option decides which lock-in parameter is swept in case it is used as a \texttt{setter} in a sweep function. This is necessary since there is no obvious choice. So far, it is possible to sweep the excitation frequency or the sine excitation amplitude.\\
+\begin{itemize}[noitemsep]
+\item \textbf{\textsf{Available parameters}: } ['frequency', 'amplitude'].
+\end{itemize}
+\textbf{\textsf{Sweep delay} (\texttt{"sweepDelay"}):} Sets the delay between each sweep iteration of aforementioned sweep parameter in seconds. Default is $0.5$~s.\\
+\textbf{\textsf{Scale factor} (\texttt{"scaleFactor"}}): You can introduce an additional scale factor if you use, e.g., a current to voltage pre-amplifier with a known gain. The instrument will put out the measured value divided by the scale factor. By default, this factor is 1.\\
+\textbf{\textsf{Auto sensitivity} (\texttt{"autoSensitivity"}):} Boolean. Enables (True) or disables (False) the autorange pyNE function.\\
+
+\section{TimeMeas}
+
+\textbf{\textsf{Short description}:} This is a virtual-instrument that either steps assigned wait periods or reports back the internal clock. Essentially there to enable time-sweeps.\\
+\textbf{\textsf{Setter or reader}:} Can act as both.\\
+You can assign the step interval in place of the GPIB address in the instrument call for setter function, or read back the time for reader function.\\
+
+\section{USB-6216In}
+
+\textbf{\textsf{Short description}:} DAC Input for the USB-6216, which is connected by USB. This is an unusual instrument in that it can currently be up to 10 instruments at once: 8 inputs and 2 outputs.\\
+\textbf{\textsf{Setter or reader}:} Reader only. To set use USB-6216Out.\\
+\textbf{\textsf{Address} (\texttt{0, 1, 2, 3, 4, 5, 6, 7}):} Sets which of the 8 available inputs will be assigned to the instrument.\\
+\textbf{\textsf{inputLevel}:} Assigned call to return the inputVoltage on that line.\\
+\textbf{\textsf{Scale factor} (\texttt{"scaleFactor"}}): You can introduce an additional scale factor if you use, e.g., a current to voltage pre-amplifier with a known gain. The instrument will put out the measured value divided by the scale factor. By default, this factor is 1.\\
+\textbf{\textsf{Resolution}:} Not yet implemented, but will enable setting resolution for a given channel if fine scaling is required. Currently defaults to $+/-10$~V.\\
+
+\section{USB-6216Out}
+
+\textbf{\textsf{Short description}:} DAC Output for the USB-6216, which is connected by USB. This is an unusual instrument in that it can currently be up to 10 instruments at once: 8 inputs and 2 outputs.\\
+\textbf{\textsf{Setter or reader}:} Setter and reader, but read returns current status of that line. To read only, use USB-6216In instead.\\
+\textbf{\textsf{Address} (\texttt{0, 1}):} Sets which of the 2 available outputs will be assigned to the instrument.\\
+\textbf{\textsf{outputLevel}:} Assigned call to set or return the outputVoltage on that line. What this is will depend on whether you set or read and your setting for feedback in the case of read.\\
+\textbf{\textsf{feedBack} (\texttt{"Int" or "Ext"}):} Sets how the channel voltage state is read back\\
+\begin{itemize}[noitemsep]
+\item \texttt{"Int" :} Uses the internal connection inside the USB-6216 to directly read the voltage being put out on this line. This is the recommended option and the default.
+\item \texttt{"Ext" :} Uses a specified analog input port to read the output voltage. This will require you to T- your output port and feed a BNC cable back to the relevant input. You will also need to specify which port this is. Defaults set to 6 and 7.
+\end{itemize}
+\textbf{\textsf{extPort}(\texttt{0, 1, 2, 3, 4, 5, 6, 7}):} Sets which of the 8 available inputs will be used to read the output voltage when you are in Ext mode. If using Int mode, this parameter is unused.\\
+\textbf{\textsf{Scale factor} (\texttt{"scaleFactor"}}): You can introduce an additional scale factor if you use, e.g., a current to voltage pre-amplifier with a known gain. The instrument will put out the measured value divided by the scale factor. By default, this factor is 1.\\ 

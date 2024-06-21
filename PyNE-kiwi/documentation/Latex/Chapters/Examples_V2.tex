@@ -1,0 +1,20 @@
+\chapter{Examples}
+The pyNE 3.0 distribution has a folder called Examples that currently has five control files in it. These are example code to help new users test an installation or develop their own control programs. The five programs are:\\
+\section{Control - DoubleTime.py}
+This program executes a simple sweep of time versus time, in other words, it will set up two instruments, one of which is just 'delay assigned time' and the other which is 'return the time since initialising the time instrument'. In a graph, you will see a plot of the number of delay times (as written, steps of 1 from 0 to 100) and the time that delay step occurred, the graph should be linear (unless you do something that intermittently delays the program execution).\\
+\\
+This program is kind of pointless except that it enables you to test an installation without needing to have any instruments attached to your machine. It is also useful for a new user who wants to just 'work out how the hell you run this crazy pyNE thing' for the first time, without having to find a rack and set-up a dummy measurement.\\
+\section{control - SimpleExample.py}
+This program executes a basic $I$-$V$ sweep with a single Keithley 2401 source-measure unit. Best used with the SMU output connected to one BNC connector of a resistor box with the other BNC grounded (ground plug). This should give a linear $I$-$V$ as output.\\
+\section{control - HarderExample.py}
+This program is a proper multi-instrument set-up featuring two K2401s and a K6517A electrometer, which is the basic FET characterisation set-up used on the probe station. This is best used on a FET box (e.g., 2SK940 with $10$~kohm in series with the channel), with the K2401s connected to the source (GPIB 24) and gate (GPIB 11), and the electrometer connected to the drain (GPIB 20). The software will first generate a set of three $I_{SD}$ vs $V_{SD}$ curves at different $V_{G}$ and then generate a set of five $I_{SD}$ vs $V_{G}$ curves at different $V_{SD}$.\\
+\section{control - USB6216SimpleExample.py}
+This program executes a basic voltage sweep with the USB6216, and is essentially designed as a very quick test that the instrument is working properly with your computer and that the nidaqmx libraries are all functioning. You should make sure that the USB6216 is connected to the computer as Dev1 in NIMAX, if this is not the case (and you can't make it so), then you will need to edit both USB6216In.py and USB6216Out.py accordingly. If this is a frequent issue, let Adam know and he can add Device numbering as an option to the code.\\
+\\
+Before executing this program, use a BNC cable to connect analog output 0 (ao0) to analog input 0 (ai0). The software will run ao0 to $-1$~V, then sweep from $-1$~V to $+1$~V, then sweep from $+1$~V back to $-1$~V, and then silently ramp ao0 back to $0$~V before terminating. You will see two sweeps, and they should both be linear with slope 1 because you are just measuring the output back.\\
+\section{control - USB6216HarderExample.py}
+This program is designed to do a full FET characterisation using the USB6216, and is designed to be used on the 2SK940 FET box (i.e., 2SK940 with $10$~kohm in series with the channel). Before executing, you should make sure that ao0 is connected to the source, ao1 is connected to the gate and ai0 connected to the output of a Femto DLPCA-200 current preamp (gain $10^{5}$ and DC mode), which is fed by the drain.\\
+\\
+The program will execute a set of $V_{SD}$ traces from $0$~V to $+2$~V and back at six different $V_{G} = +2$, $+2.2$, $+2.4$, $+2.6$, $+2.8$ and $+3.0$~V. These graphs should show a linear $I_{SD}$ vs $V_{SD}$, which saturates at high $V_{SD}$. This saturation point moves to higher voltage with increasing $V_{G}$. The saturation current also increases with increasing $V_{G}$.\\
+
+ 

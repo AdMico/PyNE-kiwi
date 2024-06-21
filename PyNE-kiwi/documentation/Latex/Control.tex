@@ -1,0 +1,105 @@
+\documentclass[12pt,english]{scrbook}
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc}  % These options actually change the Font!!!!
+\usepackage{lmodern} 	 %..which we can suppress by this package if we like to!
+
+\usepackage{fontspec}
+
+\setsansfont[
+BoldFont=cmunbsr.otf,
+ItalicFont=cmunbmo.otf,
+BoldItalicFont=cmunbso.otf
+]{cmunbmr.otf}
+
+\usepackage{graphicx}
+\graphicspath{{Figures/}}
+
+%-----------Caption
+\setkomafont{captionlabel}{\small\bfseries}
+\setkomafont{caption}{\small \sffamily} % oder nicht \small? Drucken!
+\usepackage{caption}
+\DeclareCaptionLabelSeparator{bar2}{  \rule[-0.4ex]{0.20ex}{0.9em} }%$\vert$  \rule[-0.4ex]{0.25ex}{0.9em} is nice
+\captionsetup[figure]{labelsep=bar2}
+\setcapindent{0em}
+%Section/Chapter separator
+\newcommand{\hsp}{\hspace{20pt}}
+\usepackage[explicit]{titlesec}
+
+\titleformat{\chapter}[hang]{\Huge\sffamily \bfseries}{\thechapter}{20pt}{\begin{tabular}[t]{@{\vrule width 2pt\hsp}p{0.85\textwidth}}\raggedright#1\end{tabular}}
+%
+\titleformat{\section}[hang]{\LARGE\sffamily \bfseries}{\thesection}{20pt}{\begin{tabular}[t]{@{\vrule width 1.5pt\hsp}p{0.85\textwidth}}\raggedright#1\end{tabular}}
+
+%---MathFonts-----
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+%------------------Headers------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{0pt} % no ruler at bottom
+\renewcommand{\headrulewidth}{1.0pt}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ \boldmath\textbf{#1}\unboldmath}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ \boldmath{#1}\unboldmath}}
+\fancyfoot[RO]{\thepage}    %put page into center footer
+\fancyhead[LE]{\textsf{\nouppercase{\leftmark}}}
+\fancyhead[RE]{}
+\fancyhead[RO]{\textsf{\rightmark}}
+\fancyhead[LO]{}
+\fancyfoot[CO,CE]{}
+\fancyfoot[RO,LE]{\thepage}
+% Hyperref
+\usepackage[hidelinks]{hyperref}
+%----------------Headers over ----------------
+
+%New commands
+\newcommand{\itCap}[2]{\textit{#1}$_\textsf{#2}$} %prints an Italic main character and an non italic subscript. Use in the caption environment.
+
+%Citations:
+\usepackage[autostyle=true]{csquotes}
+
+\usepackage[backend=bibtex,style=chem-acs,natbib=true]{biblatex}
+\bibliography{BibVorlage1.bib}
+\ExecuteBibliographyOptions{articletitle=true}
+
+%SI units. Use as \SI{}{}
+\usepackage{siunitx}
+
+\usepackage{color}
+\definecolor{myBrown}{RGB}{128,0,0}
+\usepackage{fix-cm}
+\usepackage{lettrine}
+\setlength{\DefaultNindent}{0pt}
+
+\usepackage{enumitem}
+
+\usepackage{setspace}
+\onehalfspacing
+
+%TitlePage
+\usepackage{pdfpages}
+
+\begin{document}
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{0pt} % no ruler at bottom
+\renewcommand{\headrulewidth}{0.7pt}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ \boldmath\textbf{#1}\unboldmath}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ \boldmath{#1}\unboldmath}}
+\fancyfoot[RO]{\thepage}    %put page into center footer
+\fancyhead[LE]{\textsf{\nouppercase{\leftmark}}}
+\fancyhead[RE]{}
+\fancyhead[RO]{\textsf{\rightmark}}
+\fancyhead[LO]{}
+\fancyfoot[CO,CE]{}
+\fancyfoot[RO,LE]{\thepage}
+
+\mainmatter
+\input{Chapters/Usage_V2}
+\input{Chapters/Instruments_V2}
+\input{Chapters/Install_V2}
+\input{Chapters/Examples_V2}
+
+\printbibliography
+
+\end{document} 

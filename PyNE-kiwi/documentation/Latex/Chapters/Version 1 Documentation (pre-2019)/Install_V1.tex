@@ -1,0 +1,35 @@
+%\input{Praeambel.tex} % Importiere die Einstellungen aus der Präambel
+% hier beginnt der eigentliche Inhalt
+%\documentclass[14pt]{scrbook}
+%\begin{document}
+\chapter{Installation and Setup}
+What do you need in order to install the pyNE software package on a new computer? All the necessary installer files should be located in the 'Documentation/ Installers' directory.
+\section{Prerequisites and installation}
+\paragraph*{Anaconda and the Visa module}
+We recommend using the \textbf{Anaconda 32 bit python 2.7} distribution. Anaconda contains most of the required scientific modules (like e.g. \textit{numpy}) that pyNE requires internally. The 32 bit version is still required for most (older) national instruments libraries (??) and we more or less arbitrarily decided on using the 'old' 2.7 version of python.\\
+\\
+Make sure to install Anaconda on a location within your user environment since this will make installing additional packages like the one we are now going to add a lot easier.\\
+The only python module we will have to install by hand is the \textit{Visa} module:
+\begin{enumerate}
+\item In the windows start screen search and execute the 'Anaconda prompt'
+\item A terminal should appear. Type in '\texttt{conda install -c conda-forge pyvisa}' and execute.
+\item This should automatically install the module with all its dependencies.
+\end{enumerate}
+\paragraph*{National instruments (NI) VISA libraries and drivers}
+Get the NI4882 library (or a newer version) from the internet or the pyNE directory and install it on your system. No further actions required.
+\paragraph*{Creating a base folder/path}. pyNE itself is only a collection of scripts and thus does not need to be installed. You just choose a suitable folder and copy the contents of the latest pyNE version into it. Write down the full path of this folder! Every \textit{control file} starts with importing these scripts via
+\begin{verbatim}
+import os
+os.chdir('basefolder')
+from Imports import *
+\end{verbatim}
+and you need to use the filepath where your pyNE scripts are located. 
+\paragraph*{Setup the proper measurement ID file.}
+
+Every measurement in pyNE has a running script consisting of a two letters and increasing number. E.g. measurementNamePr123 would mean that the mesurement 'measurementName" was the 123th measurement on the Rack that is associated with the measurement setup Pr (in this case the probestation/gasbox).\\
+\\
+When initializing a new setup, we have to do two things: Set the counter back to zero and create a new letter combination associated with this new setup.
+\begin{enumerate}
+\item Open the GlobalMeasID.py file in spyder so you can edit its contents. Change the IDpath variable to 'basefolder+GlobalMeasIDBinary' divided by a backslash. Edit the \texttt{currentSetup} variable to a string of your choice. We recommend keeping it down to two letters for simplicity, like e.g. 'Pr' for Probestation as in the example code.
+\item import GlobalMeasID in Spyder so you can access its functions in the console. If Spyder can't locate it, change the current working directory into your pyNE folder. Now execute GlobalMeasID.init(). This will set the internal counter to zero.
+\end{enumerate}

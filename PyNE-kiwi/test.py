@@ -17,7 +17,7 @@ print(ResList)
 
 ## Hook up the B2201 and ask for its ID.
 B2201 = rm.open_resource('GPIB0::22::INSTR')
-print('B2201 ID: ',B2201A.query("*IDN?"))
+print('B2201 ID: ',B2201.query("*IDN?"))
 
 ## Hook up the B1500 and ask for its ID.
 B1500 = rm.open_resource('USB0::0x0957::0x0001::0001::INSTR')
@@ -36,6 +36,7 @@ B2201.write(":ROUT:CONN:RULE 1,FREE")
 B2201.write(":ROUT:CONN:SEQ 1,BBM")
 B2201.write(":ROUT:CLOS (@10101,10202,10303,10404,11005,11006,11007,11008,10909,11010,11011,11012)")
 time.sleep(5)
+B2201.write(":ROUT:OPEN:CARD 1")
 B2201.write(":ROUT:CLOS (@11001,11002,11003,11004,10105,10206,10307,10408,10909,11010,11011,11012)")
 time.sleep(5)
 B2201.write(":ROUT:OPEN:CARD 1")

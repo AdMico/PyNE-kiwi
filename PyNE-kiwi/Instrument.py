@@ -4,7 +4,7 @@ Brought to v4.0.0 on Tue May 09 2023 by APM
 @author: Jakob Seidl
 """
 
-from collections import Iterable
+from collections.abc import Iterable
 # Checks if val is iterable, but not a string
 
 def isIterable(val):

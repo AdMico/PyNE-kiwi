@@ -20,7 +20,7 @@ class B1500_SMU1(Instrument.Instrument):
 
     def __init__(self, address):
         super(B1500_SMU1, self).__init__()
-        self.dev = B1500 = AgilentB1500('USB0::0x0957::0x0001::0001::INSTR', read_termination='\r\n', write_termination='\r\n', timeout=60000)
+        self.dev = AgilentB1500('USB0::0x0957::0x0001::0001::INSTR', read_termination='\r\n', write_termination='\r\n', timeout=60000)
         print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device        
         self.type ="Keithley2401"  #We can check each instrument for its type and react accordingly
         self.scaleFactor = 1.0

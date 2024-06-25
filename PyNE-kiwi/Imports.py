@@ -1,5 +1,5 @@
 """
-Brought to v4.0.0 on Tue May 09 2023 by APM
+Brought to v1.0.0 on Tue June 25 2024 by APM
 
 @author: Jakob Seidl
 
@@ -16,7 +16,4 @@ from SweepFunction import sweepAndSave
 from Instrument import closeInstruments
 from GUIs import fileDialog, initialize
 from Keithley2401 import Keithley2401
-from SRS830 import SRS830
-from Electrometer import Keithley6517A
-from YokogawaGS200 import YokogawaGS200
 from TimeMeas import TimeMeas

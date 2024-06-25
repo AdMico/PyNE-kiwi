@@ -1,25 +1,26 @@
 """
 Brought to v1.0.0 on Tue June 25 2024 by APM
 
-Standard SMU setup for Keithley 2400
+Development SMU setup for Keysight B1500A.
 
-@author: Jakob Seidl
+@author: Adam  Micolich
 """
 
 import pyvisa as visa
 import Instrument
 import numpy as np
 import time
+from pymeasure.instruments.agilent import AgilentB1500
 
 @Instrument.enableOptions
-class Keithley2401(Instrument.Instrument):
+class B1500_SMU1(Instrument.Instrument):
     # Default options to set/get when the instrument is passed into the sweeper
     defaultOutput = "sourceLevel"
     defaultInput = "senseLevel"
 
     def __init__(self, address):
-        super(Keithley2401, self).__init__()
-        self.dev = visa.ResourceManager().open_resource("GPIB0::"+str(address)+"::INSTR")
+        super(B1500_SMU1, self).__init__()
+        self.dev = B1500 = AgilentB1500('USB0::0x0957::0x0001::0001::INSTR', read_termination='\r\n', write_termination='\r\n', timeout=60000)
         print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device        
         self.type ="Keithley2401"  #We can check each instrument for its type and react accordingly
         self.scaleFactor = 1.0
@@ -28,13 +29,9 @@ class Keithley2401(Instrument.Instrument):
         self.sourceMode = self._getSourceMode()
         self.sourceLimits = 100 #Dummy number to be replaced by setSourceRange function
 
-    @Instrument.addOptionSetter("beepEnable")
-    def _setBeepEnable(self, enable):
-        self.dev.write(":SYST:BEEP:STAT " + ("ON" if enable else "OFF"))
-
     @Instrument.addOptionSetter("outputEnable")
     def _setOutputEnable(self, enable):
-        self.dev.write(":OUTP " + ("ON" if enable else "OFF"))
+        self.dev.smu1.enable()
     
     @Instrument.addOptionSetter("sourceMode")
     def _setSourceMode(self, mode):

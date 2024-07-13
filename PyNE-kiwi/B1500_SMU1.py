@@ -1,16 +1,16 @@
 """
 Brought to v1.0.0 on Tue June 25 2024 by APM
 
-Development SMU setup for Keysight B1500A.
+Development of SMU1 setup for Keysight B1500A using Keithley2401.py from PyNE-probe
 
 @author: Adam  Micolich
 """
 
-import pyvisa as visa
 import Instrument
 import numpy as np
 import time
-from pymeasure.instruments.agilent import AgilentB1500
+from Config import Diags
+import KeysightB1500A
 
 @Instrument.enableOptions
 class B1500_SMU1(Instrument.Instrument):
@@ -20,8 +20,9 @@ class B1500_SMU1(Instrument.Instrument):
 
     def __init__(self, address):
         super(B1500_SMU1, self).__init__()
-        self.dev = AgilentB1500('USB0::0x0957::0x0001::0001::INSTR', read_termination='\r\n', write_termination='\r\n', timeout=60000)
-        print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device        
+        self.dev = B1500.smu1
+        if Diags = "Verbose":
+            print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device
         self.type ="Keithley2401"  #We can check each instrument for its type and react accordingly
         self.scaleFactor = 1.0
         self.currentSourceSetpoint = float('nan')

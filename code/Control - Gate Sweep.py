@@ -1,22 +1,14 @@
 """
-Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
-
-@developers: Adam Micolich
+Brought to v4.0.0 on Tue May 09 2023 by APM
 
 @author: Jakob Seidl
 
-Development code for running a gate sweep in the VUW set-up
+Very basic example for doing an I-V sweep with a single K2401; corresponds to first example in documentation.
 """
 
+import os
+os.chdir('..\\')
 from Imports import *
-from Init_B1500 import B1500_init
-
-# Instrument Initialisation Process
-
-#B1500 Initialisation -- Ends with four SMUs at 0.0V
-B1500_init()
-
-#B2201 Initialisation -- Ends with Even Configuration Hooked up
 
 # 1) Initialize Instruments
 #---- Keithley 1 --------------

@@ -1,9 +1,11 @@
 """
-Brought to v1.0.0 on Tue June 25 2024 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
-Standard SMU setup for Keithley 2400
+@developers: Adam Micolich
 
 @author: Jakob Seidl
+
+Standard SMU setup for Keithley 2401
 """
 
 import pyvisa as visa

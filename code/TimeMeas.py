@@ -1,7 +1,12 @@
 """
-Brought to v4.0.0 on Tue May 09 2023 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
+
+@developers: Adam Micolich
 
 @author: Adam Micolich
+
+
+Time-sweep program from PyNE. If unused here move to purgatory and deprecate in a future version
 """
 
 import time

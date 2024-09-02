@@ -3,6 +3,8 @@ Brought to PyNE-kiwi v1.0.0 on Fri Aug 30 2024 by APM
 
 @developers: Adam Micolich
 
+@author: Adam Micolich
+
 This informs various parts of the software about aspects of your bench setup. Edit as needed for your setup.
 """
 

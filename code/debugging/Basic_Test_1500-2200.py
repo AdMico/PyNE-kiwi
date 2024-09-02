@@ -1,9 +1,11 @@
 """
-Brought to v1.0.0 on Mon Jun 24 2024 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Jun 24 2024 by APM
 
-Test code for establishing initial communication with B1500 and B2201 and testing basic functions
+@developers: Adam Micolich
 
 @author: Adam Micolich
+
+Test code for establishing initial communication with B1500 and B2201 and testing basic functions
 """
 
 import pyvisa

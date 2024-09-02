@@ -1,11 +1,13 @@
 """
-Brought to v1.0.0 on Fri July 12 2024 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
+
+@developers: Adam Micolich
+
+@author: Base inherited from PyMeasure Developers
 
 Development of a Keysight B1500A virtual instrument mod from PyMeasure Agilent B1500A.
 This will be a stripped back and focussed version of the Agilent B1500 code that only
 has the pieces we really need so that it's easier to work with.
-
-@author: Adam  Micolich
 """
 ## Legacy comments from PyMeasure follow.
 #

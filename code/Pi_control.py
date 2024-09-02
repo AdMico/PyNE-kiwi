@@ -3,12 +3,13 @@ Brought to PyNE-kiwi v1.0.0 on Fri Aug 30 2024 by APM
 
 @developers: Adam Micolich
 
-This class sets up the Pi to be controlled remotely. The truth table is that of the multiplexer.
+@author: Jan Gluschke & Adam Micolich
+
+This class sets up the Pi to be controlled remotely for running the switch relays on the probe-arm.
 """
 from gpiozero import LED
 from gpiozero.pins.pigpio import PiGPIOFactory
 from Config import PiBox
-import pigpio
 import time
 
 class PiMUX:
@@ -20,10 +21,6 @@ class PiMUX:
             IP = '10.155.128.34'
         self.IP = IP
         self.PiFactory = PiGPIOFactory(host=self.IP)
-
-        #DeviceTable format: Device: [A3,A2,A1,A0,EN1,EN2,EN3,EN4], #MUX <number> Pin <number> (Mx <number> out of 16)
-#        self.DeviceTable = {0: [0, 0, 0, 0, 0, 0, 0, 0],  # OFF state #Deprecate in future version
-#                            1: [1, 1, 0, 0, 0, 0, 0, 1]}  # MUX 4 Pin 7 (Mx13)
 
         #Define the GPIO pin to raise to switch the given device onto SMB connector
 
@@ -37,14 +34,6 @@ class PiMUX:
         self.DP16 = LED(9,pin_factory = self.PiFactory) #Will activate D16 and deactivate D15 to SMB #12 -- Revert to Pin 2 at V2 Hardware update APM 30AUG24
 
         self.listPins = [self.DP9,self.DP10,self.DP11,self.DP12,self.DP13,self.DP14,self.DP15,self.DP16] #May not have use -- consider deprecating.
-
-#    def setMuxToOutput(self, desiredOutput): #Deprecate in future version
-#        elif MuxMode == 'Run':
-#            for index, item in enumerate(self.listPins):
-#                if self.RowTable[desiredOutput][index]:
-#                    item.on()
-#                else:
-#                    item.off()
 
     def DP9on(self): # Switches the connection to SMB #9 to Device Pin 9 -- APM 30AUG24
         self.DP9.on()

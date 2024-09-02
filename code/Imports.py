@@ -1,5 +1,7 @@
 """
-Brought to v1.0.0 on Tue June 25 2024 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
+
+@developers: Adam Micolich
 
 @author: Jakob Seidl
 
@@ -14,6 +16,4 @@ import matplotlib.pyplot as plt
 
 from SweepFunction import sweepAndSave
 from Instrument import closeInstruments
-from GUIs import fileDialog, initialize
 from Keithley2401 import Keithley2401
-from TimeMeas import TimeMeas

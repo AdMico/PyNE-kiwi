@@ -1,7 +1,7 @@
 """
-Brought to PyNE-wells v1.1.0 on Thu Nov 1 2023 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
-@developers: Adam Micolich, Jan Gluschke & Shuji Kojima
+@developers: Adam Micolich
 
 @author: Jakob Seidl
 
@@ -19,7 +19,7 @@ filePath =  relPath + 'GlobalMeasIDBinary'
 
 Reset = 1 #Switch to enable/disable running of this .py from reseting the ID number. Default as 1 for code download but you probably want to set to 0 once you've initialised the GMID to prevent accidental GMID reset.
 
-def initID(preFix = 'TE',ID= 1): ## Routine initialises the Global Measurement ID (GMID). See bottom of code for running as main. The string and starting number are specified here though.
+def initID(preFix = 'VUW',ID= 1): ## Routine initialises the Global Measurement ID (GMID). See bottom of code for running as main. The string and starting number are specified here though.
     """ Initializes a new preFix dictionary with the default prefix 'EL' and a running ID of zero."""
     with open(filePath, 'w') as file:
      file.write(json.dumps({'currentPreFix':preFix,preFix:ID

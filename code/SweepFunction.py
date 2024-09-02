@@ -1,7 +1,11 @@
 """
-Brought to v4.0.0 on Tue May 09 2023 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
+
+@developers: Adam Micolich
 
 @author: Jakob Seidl
+
+Old code from PyNE. If unused send to purgatory and deprecate in future update.
 """
 
 from collections import Iterable

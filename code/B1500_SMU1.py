@@ -1,9 +1,11 @@
 """
-Brought to v1.0.0 on Tue June 25 2024 by APM
+Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
+
+@developers: Adam Micolich
+
+@author: Adam Micolich
 
 Development of SMU1 setup for Keysight B1500A using Keithley2401.py from PyNE-probe
-
-@author: Adam  Micolich
 """
 
 import Instrument

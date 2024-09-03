@@ -16,4 +16,4 @@ import matplotlib.pyplot as plt
 
 from SweepFunction import sweepAndSave
 from Instrument import closeInstruments
-from Keithley2401 import Keithley2401
+from K2401_SMU import Keithley2401

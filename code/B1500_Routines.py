@@ -20,13 +20,13 @@ def B1500_init():
         print('B1500 ID: ',B1500.id)
     # SMU initialization is required to be able to address single SMUs
     B1500.initialize_all_smus()
-    # Enable all four SMUs
-    B1500.smu1.enable()
-    B1500.smu2.enable()
-    B1500.smu3.enable()
-    B1500.smu4.enable()
     # Ensure all four SMUs are zeroed
     B1500.smu1.force('Voltage','Auto Ranging',0.0)
     B1500.smu2.force('Voltage','Auto Ranging',0.0)
     B1500.smu3.force('Voltage','Auto Ranging',0.0)
     B1500.smu4.force('Voltage','Auto Ranging',0.0)
+    # Enable all four SMUs
+    B1500.smu1.enable()
+    B1500.smu2.enable()
+    B1500.smu3.enable()
+    B1500.smu4.enable()

@@ -1,13 +1,13 @@
 """
-Brought to v4.0.0 on Tue May 09 2023 by APM
+Brought to PyNE-kiwi v1.0.0 on Tue Sep 3 2024 by APM
+
+@developers: Adam Micolich
 
 @author: Jakob Seidl
 
-Very basic example for doing an I-V sweep with a single K2401; corresponds to first example in documentation.
+Control program for basic gate voltage sweep on VUW setup
 """
 
-import os
-os.chdir('..\\')
 from Imports import *
 
 # 1) Initialize Instruments

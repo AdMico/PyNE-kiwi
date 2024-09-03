@@ -5,14 +5,16 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @author: Adam Micolich
 
-Development of SMU1 setup for Keysight B1500A using Keithley2401.py from PyNE-probe
+Development of SMU1 setup for Keysight B1500A using K2401_SMU.py from PyNE-probe/
+
+NOTE 03SEP24 APM -- Going to strip back to bare minimum functions and possibly add things in as some K2401 features are unimplementable in B1500.
+Will just comment out these functions for now, deprecate properly in a future version.
 """
 
 import Instrument
 import numpy as np
 import time
 from Config import Diags
-import KeysightB1500A
 
 @Instrument.enableOptions
 class B1500_SMU1(Instrument.Instrument):
@@ -20,88 +22,129 @@ class B1500_SMU1(Instrument.Instrument):
     defaultOutput = "sourceLevel"
     defaultInput = "senseLevel"
 
-    def __init__(self, address):
+    def __init__(self):
         super(B1500_SMU1, self).__init__()
         self.dev = B1500.smu1
         if Diags = "Verbose":
             print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device
-        self.type ="Keithley2401"  #We can check each instrument for its type and react accordingly
+        self.type ="B1500_SMU1"  #We can check each instrument for its type and react accordingly
         self.scaleFactor = 1.0
         self.currentSourceSetpoint = float('nan')
         self.hitCompliance = []
-        self.sourceMode = self._getSourceMode()
+#        self.sourceMode = self._getSourceMode() ## Line disfunctional presently to fix later -- 03SEP24 APM
+        self.sourceMode = "voltage"
+        self.SMUnum = 1
         self.sourceLimits = 100 #Dummy number to be replaced by setSourceRange function
 
     @Instrument.addOptionSetter("outputEnable")
     def _setOutputEnable(self, enable):
-        self.dev.smu1.enable()
-    
-    @Instrument.addOptionSetter("sourceMode")
-    def _setSourceMode(self, mode):
-        if mode == "voltage":
-            # Source a voltage, sense a current
-            self.dev.write("SOUR:FUNC VOLT")
-            self.dev.write("SENS:FUNC 'CURR'")
-            self.sourceMode = 'voltage'
-        elif mode == "current":
-            # Source a current, sense a voltage
-            self.dev.write("SOUR:FUNC CURR")
-            self.dev.write("SENS:FUNC 'VOLT'")
-            self.sourceMode = 'current'
+        if enable:
+            self.dev.enable()
         else:
-            raise ValueError(
-                "\"{}\" is not a valid source mode for the Keithley2401.".format(mode) +
-                " The mode must either be \"voltage\" or \"current\""
-            )
+            self.dev.disable()
 
-    @Instrument.addOptionGetter("sourceMode")
-    def _getSourceMode(self):
-        mode = self.dev.query("SOUR:FUNC:MODE?")
-        if mode == "VOLT\n":
-            return "voltage"
-        elif mode == "CURR\n":
-            return "current"
-        else:
-            raise RuntimeError("Unknown source mode {}".format(mode))
+## Commenting this function as I don't know how to sensibly implement in the Keysight B1500, possible future deprecate -- 03SEP24 APM
+#    @Instrument.addOptionSetter("sourceMode")
+#    def _setSourceMode(self, mode):
+#        if mode == "voltage":
+#            # Source a voltage, sense a current
+#            self.dev.write("SOUR:FUNC VOLT")
+#            self.dev.write("SENS:FUNC 'CURR'")
+#            self.sourceMode = 'voltage'
+#        elif mode == "current":
+#            # Source a current, sense a voltage
+#            self.dev.write("SOUR:FUNC CURR")
+#            self.dev.write("SENS:FUNC 'VOLT'")
+#            self.sourceMode = 'current'
+#        else:
+#            raise ValueError(
+#                "\"{}\" is not a valid source mode for the Keithley2401.".format(mode) +
+#                " The mode must either be \"voltage\" or \"current\""
+#            )
+
+## Commenting this as a problem for later, this is doable but not urgent -- 03SEP24
+#    @Instrument.addOptionGetter("sourceMode")
+#    def _getSourceMode(self):
+#        mode = self.dev.query("SOUR:FUNC:MODE?")
+#        if mode == "VOLT\n":
+#            return "voltage"
+#        elif mode == "CURR\n":
+#            return "current"
+#        else:
+#            raise RuntimeError("Unknown source mode {}".format(mode))
 
     @Instrument.addOptionSetter("sourceRange")
-    def _setSourceRange(self, sourceRange):  
+    def _setSourceRange(self, sourceRange): ## Set to Limited Autorange for first instance, APM to add fixed auto later -- 03SEP24 APM
         mode = self.get("sourceMode", forceCached = False)
-
         if (mode == "voltage"): 
-            if float(sourceRange) in (20,10,1,0.1,0.01,0.001):
-                self.dev.write("SOUR:VOLT:RANG "+str(sourceRange))
+            if float(sourceRange) in (100,40,20,5,2,0.5): ## Set to Limited Autorange
+                if sourceRange == 100:
+                    self.dev.write("RV "+str(self.SMUnum)+",1000")
+                elif sourceRange == 40:
+                    self.dev.write("RV " + str(self.SMUnum) + ",400")
+                elif sourceRange == 20:
+                    self.dev.write("RV " + str(self.SMUnum) + ",200")
+                elif sourceRange == 5:
+                    self.dev.write("RV " + str(self.SMUnum) + ",50")
+                elif sourceRange == 2:
+                    self.dev.write("RV " + str(self.SMUnum) + ",20")
+                elif sourceRange == 0.5:
+                    self.dev.write("RV " + str(self.SMUnum) + ",5")
                 self.sourceLimits = 1.3*float(sourceRange)
             else:
                 raise ValueError(
-                    "\"{}\" is not a valid voltage source range for the Keithley2401.".format(sourceRange) +
-                    " Valid voltage ranges are: 20, 10, 1, 0.1, 0.01 and 0.001 Volts and equivalent exponential representations."
+                    "\"{}\" is not a valid voltage source range for the Keysight B1500.".format(sourceRange) +
+                    " Valid voltage ranges are: 100, 40, 20, 5, 2 and 0.5 Volts and equivalent exponential representations."
                 )
         elif (mode == "current"):   
-            if float(sourceRange) in (1,0.1,0.01,0.001,1E-4,1E-5,1E-6):
-                self.dev.write("SOUR:CURR:RANG "+str(sourceRange))   #Dummy function. Have to ignore false inputs and accept 1E-2 as well as 1e-2 etc.
+            if float(sourceRange) in (0.1,0.01,1E-3,1E-4,1E-5,1E-6,1E-7,1E-8,1E-9,1E-10,1E-11,1E-12):
+                if sourceRange == 0.1:
+                    self.dev.write("RI " + str(self.SMUnum) + ",19")
+                elif sourceRange == 0.01:
+                    self.dev.write("RI " + str(self.SMUnum) + ",18")
+                elif sourceRange == 1E-3:
+                    self.dev.write("RI " + str(self.SMUnum) + ",17")
+                elif sourceRange == 1E-4:
+                    self.dev.write("RI " + str(self.SMUnum) + ",16")
+                elif sourceRange == 1E-5:
+                    self.dev.write("RI " + str(self.SMUnum) + ",15")
+                elif sourceRange == 1E-6:
+                    self.dev.write("RI " + str(self.SMUnum) + ",14")
+                elif sourceRange == 1E-7:
+                    self.dev.write("RI " + str(self.SMUnum) + ",13")
+                elif sourceRange == 1E-8:
+                    self.dev.write("RI " + str(self.SMUnum) + ",12")
+                elif sourceRange == 1E-9:
+                    self.dev.write("RI " + str(self.SMUnum) + ",11")
+                elif sourceRange == 1E-10:
+                    self.dev.write("RI " + str(self.SMUnum) + ",10")
+                elif sourceRange == 1E-11:
+                    self.dev.write("RI " + str(self.SMUnum) + ",9")
+                elif sourceRange == 1E-12:
+                    self.dev.write("RI " + str(self.SMUnum) + ",8")
                 self.sourceLimits = 1.3*float(sourceRange)
             else:
                 raise ValueError(
-                    "\"{}\" is not a valid current source range for the Keithley2401.".format(sourceRange) +
-                    " Valid voltage ranges are: 1, 0.1, 0.01, 0.001, 1E-5 and 1E-6 Amps and equivalent exponential representations."
+                    "\"{}\" is not a valid current source range for the Keysight B1500.".format(sourceRange) +
+                    " Valid voltage ranges are: 0.1 to 1E-12 Amps in decades and equivalent exponential representations."
                 )
 
-    @Instrument.addOptionGetter("sourceLevel")
-    def _getSourceLevel(self):
-       # mode = self.get("sourceMode", deprecated
-        mode = self.sourceMode
-        if (mode == "voltage"): #    
-           return(float(self.dev.query("SOUR:VOLT?")))               
-        elif (mode == "current"):  
-            return(float(self.dev.query("SOUR:CURR?")))
+## Commenting this as a problem for later, this is doable but not urgent -- 03SEP24
+#    @Instrument.addOptionGetter("sourceLevel")
+#    def _getSourceLevel(self):
+#       # mode = self.get("sourceMode", deprecated
+#        mode = self.sourceMode
+#        if (mode == "voltage"): #
+#           return(float(self.dev.query("SOUR:VOLT?")))
+#        elif (mode == "current"):
+#            return(float(self.dev.query("SOUR:CURR?")))
            
     @Instrument.addOptionSetter("sourceLevel") 
     def _setSourceLevel(self, sourceLevel):
         mode = self.sourceMode
         if (mode == "voltage"): # when sourcing a voltage we want to set the voltage level =)   
             if (self.sourceLimits > sourceLevel and sourceLevel > -self.sourceLimits):
-                self.dev.write("SOUR:VOLT "+str(sourceLevel))
+                self.dev.write("DV "+str(sourceLevel))
                 self.currentSourceSetpoint = float(sourceLevel)
             else:
                 raise ValueError(

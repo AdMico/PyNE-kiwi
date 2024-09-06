@@ -21,6 +21,10 @@ print(ResList)
 B2201 = rm.open_resource('GPIB0::22::INSTR')
 print('B2201 ID: ',B2201.query("*IDN?"))
 
+## Hook up the K2401 and ask for its ID.
+K2401 = rm.open_resource('GPIB0::24::INSTR')
+print('K2401 ID: ',K2401.query("*IDN?"))
+
 ## Hook up the B1500 and ask for its ID.
 B1500 = rm.open_resource('USB0::0x0957::0x0001::0001::INSTR')
 print('B1500 ID: ',B1500.query("*IDN?"))
@@ -29,6 +33,7 @@ print('B1500 ID: ',B1500.query("*IDN?"))
 B1500 = AgilentB1500('USB0::0x0957::0x0001::0001::INSTR', read_termination='\r\n', write_termination='\r\n', timeout=60000)
 #B1500 = AgilentB1500('USB0::0x0957::0x0001::0001::INSTR', timeout = 60000)
 B1500.initialize_all_smus()
+B1500.smu1.enable()
 B1500.smu1.force('Voltage','Auto Ranging',1.0)
 time.sleep(5)
 

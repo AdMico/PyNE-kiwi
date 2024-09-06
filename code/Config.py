@@ -11,7 +11,7 @@ This informs various parts of the software about aspects of your bench setup. Ed
 ## IMPORTANT -- You need to set PiBox correctly before you first use the software to avoid controlling someone else's hardware by mistake -- see main README.md file
 # Information about which Raspberry Pi you are using (MeasureOne, MeasureTwo, etc)
 # Details for the various Pis are in Pi_control.py
-PiBox = 'MeasureThree'
+PiBox = 'WellyPi'
 
 # Code Diagnostics Switch
 # Use "Verbose" for information prints on and "Silent" to suppress.

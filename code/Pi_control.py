@@ -89,7 +89,7 @@ class PiMUX:
 
 if __name__ == "__main__": # execute only if this script is run, not when it's being imported
     my_pi = PiMUX()
-    time.sleep(10)
+    time.sleep(1.0)
     my_pi.DP_Odd() # comment to switch on/off as needed.
     time.sleep(1.5)
     my_pi.DP_Even()

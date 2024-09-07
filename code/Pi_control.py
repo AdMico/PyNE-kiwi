@@ -11,6 +11,7 @@ from gpiozero import LED
 from gpiozero.pins.pigpio import PiGPIOFactory
 from Config import PiBox
 import time
+import pigpio
 
 class PiMUX:
 
@@ -19,6 +20,7 @@ class PiMUX:
             IP = '129.94.163.75'
         if PiBox == 'WellyPi':
             IP = '10.155.128.34'
+#        pigpio.pi('soft',8888)
         self.IP = IP
         self.PiFactory = PiGPIOFactory(host=self.IP)
 

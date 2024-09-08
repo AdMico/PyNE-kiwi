@@ -28,8 +28,10 @@ def B2201_init():
 
 @B2201.Even
 def B2201_even():
+    B2201.write(":ROUT:OPEN:CARD 1") #Reset card before setting -- APM 08SEP24
     B2201.write(":ROUT:CLOS (@11001,10102,11003,10204,11005,10306,11007,10408,10909,10910,10911,10912)")
 
 @B2201.Odd
 def B2201_odd():
+    B2201.write(":ROUT:OPEN:CARD 1")  # Reset card before setting -- APM 08SEP24
     B2201.write(":ROUT:CLOS (@10101,11002,10203,11004,10305,11006,10407,11008,10909,10910,10911,10912)")

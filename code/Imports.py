@@ -14,6 +14,13 @@ import time
 from itertools import product
 import matplotlib.pyplot as plt
 
+from Config import *
+from B1500_Routines import B1500_init
+from B2201_Routines import B2201_init,B2201_odd,B2201_even
+from K2401_SMU import Keithley2401
+from B1500_SMU1 import B1500_SMU1
+from B1500_SMU2 import B1500_SMU2
+from B1500_SMU3 import B1500_SMU3
+from B1500_SMU4 import B1500_SMU4
 from SweepFunction import sweepAndSave
 from Instrument import closeInstruments
-from K2401_SMU import Keithley2401

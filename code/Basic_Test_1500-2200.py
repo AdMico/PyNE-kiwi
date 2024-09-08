@@ -10,7 +10,6 @@ Test code for establishing initial communication with B1500 and B2201 and testin
 
 import pyvisa
 import time
-import qcodes as qc
 from qcodes.instrument_drivers.Keysight import KeysightB1500
 from qcodes.instrument_drivers.Keysight.keysightb1500 import MessageBuilder, constants
 

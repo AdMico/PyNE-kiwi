@@ -5,7 +5,7 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @author: Adam Micolich
 
-Development of SMU1 setup for Keysight B1500A using K2401_SMU.py from PyNE-probe/
+Development of SMU2 setup for Keysight B1500A using K2401_SMU.py from PyNE-probe/
 
 NOTE 08SEP24 APM -- Stripped back to bare minimum functions and will add things in as some K2401 features are unimplementable in B1500.
 Will just comment out these functions for now, deprecate properly in a future version.
@@ -19,21 +19,21 @@ from qcodes.instrument_drivers.Keysight import KeysightB1500
 from qcodes.instrument_drivers.Keysight.keysightb1500 import constants, MessageBuilder
 
 @Instrument.enableOptions
-class B1500_SMU1(Instrument.Instrument):
+class B1500_SMU2(Instrument.Instrument):
     # Default options to set/get when the instrument is passed into the sweeper
     defaultOutput = "sourceLevel"
     defaultInput = "senseLevel"
 
     def __init__(self):
-        super(B1500_SMU1, self).__init__()
-        self.dev = B1500.smu1
-        self.type ="B1500_SMU1"  #We can check each instrument for its type and react accordingly
+        super(B1500_SMU2, self).__init__()
+        self.dev = B1500.smu2
+        self.type ="B1500_SMU2"  #We can check each instrument for its type and react accordingly
         self.scaleFactor = 1.0
         self.currentSourceSetpoint = float('nan')
         self.hitCompliance = []
 #        self.sourceMode = self._getSourceMode() ## Line dysfunctional presently to fix later -- 03SEP24 APM
         self.sourceMode = "voltage"
-        self.SMUnum = 1
+        self.SMUnum = 2
         self.sourceLimits = 2 #Dummy number to be replaced by setSourceRange function, 2V used currently re: Config.py -- 08SEP24 APM
 
     @Instrument.addOptionSetter("outputEnable")

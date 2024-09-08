@@ -10,36 +10,41 @@ Control program for basic gate voltage sweep on VUW setup
 
 from Imports import *
 
-# 1) Initialize Instruments
-#---- Keithley 1 --------------
-keithley = Keithley2401(24)
-keithley.setOptions({
-    "beepEnable": False,
-    "sourceMode": "voltage",
-    "sourceRange":10,
-    "senseRange": 1.05e-6,
-    "compliance": 1.0E-8,
-    "scaleFactor":1
-})
+## Initialise B1500 -- Semiconductor Parameter Analyser
+B1500_init()
 
-[basePath,fileName] = fileDialog()
+## Initialise B2201
+B2201_init()
 
-start = 0.0; end = 1.5; step = 0.001
-Vsd = np.arange(start,end,step)
-inputPoints = product(Vsd)
+## Initialise K2401
+K2401 = Keithley2401(24)
+K2401.setOptions({"beepEnable": False,"sourceMode": "voltage","sourceRange":K2401sourceRange,"senseRange": K2401senseRange,"compliance": K2401compl,"scaleFactor":1})
 
-inputHeaders = ["Vsd"]
-inputSetters = [keithley]
+## Initialise Datafile
+measurementName = str(ID.readCurrentSetup()) + str(ID.readCurrentID())
+today = date.today()
+t=today.strftime("%y%m%d")
+dataPath = basePath + "/"+t+"_"+measurementName
 
-outputHeaders = ["Isd"]
-outputReaders = [keithley]
-keithley.set('outputEnable',True)
+## Set gate voltage dataset
+start = 0.0; end = 0.5; step = 0.001
+Vg = np.arange(start,end,step)
+inputPoints = product(Vg)
 
+## Set up inputs and outputs
+inputHeaders = ["Vg"]
+inputSetters = [K2401]
+outputHeaders = ["Is_SMU1","Is_SMU2","Is_SMU3","Is_SMU4"]
+outputReaders = [B1500_SMU1,B1500_SMU2,B1500_SMU3,B1500_SMU4]
+K2401.set("outputEnable",True)
+
+## Run sweep
 sweepAndSave(
         basePath+fileName,
         inputHeaders, inputPoints, inputSetters,
         outputHeaders, outputReaders, saveEnable = True,
-        plotParams = ['Vsd','Isd']
+        plotParams = ["Vg","Is_SMU1","Is_SMU2","Is_SMU3","Is_SMU4"]
 )
 
+## Finalise
 closeInstruments(inputSetters,outputReaders)

@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 from Config import *
 from B1500_Routines import B1500_init
-from B2201_Routines import B2201_init,B2201_odd,B2201_even
+from B2201_Routines import B2201_init,B2201_odd,B2201_even,B2201_ground,B2201_clear
 from K2401_SMU import Keithley2401
 from B1500_SMU1 import B1500_SMU1
 from B1500_SMU2 import B1500_SMU2

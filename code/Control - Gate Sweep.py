@@ -10,6 +10,9 @@ Control program for basic gate voltage sweep on VUW setup
 
 from Imports import *
 
+## Initialise Pi Connection
+CtrlPi = PiMUX()
+
 ## Initialise B1500 -- Semiconductor Parameter Analyser
 B1500_init()
 
@@ -31,20 +34,50 @@ start = 0.0; end = 0.5; step = 0.001
 Vg = np.arange(start,end,step)
 inputPoints = product(Vg)
 
+print("Do the first odd gate sweep")
+B2200_odd()
+CtrlPi.DP_odd()
+
 ## Set up inputs and outputs
 inputHeaders = ["Vg"]
 inputSetters = [K2401]
-outputHeaders = ["Is_SMU1","Is_SMU2","Is_SMU3","Is_SMU4"]
+outputHeaders = ["Is_SMU1","Is_SMU3","Is_SMU5","Is_SMU7"]
 outputReaders = [B1500_SMU1,B1500_SMU2,B1500_SMU3,B1500_SMU4]
 K2401.set("outputEnable",True)
+
+#Set odd datapath
+dataPath = basePath + "/"+t+"_"+measurementName"_odd"
 
 ## Run sweep
 sweepAndSave(
         basePath+fileName,
         inputHeaders, inputPoints, inputSetters,
         outputHeaders, outputReaders, saveEnable = True,
-        plotParams = ["Vg","Is_SMU1","Is_SMU2","Is_SMU3","Is_SMU4"]
+        plotParams = ["Vg","Is_SMU1","Is_SMU3","Is_SMU5","Is_SMU7"]
 )
 
-## Finalise
+print("Do the second even gate sweep")
+B2200_even()
+CtrlPi.DP_even()
+
+## Set up inputs and outputs
+inputHeaders = ["Vg"]
+inputSetters = [K2401]
+outputHeaders = ["Is_SMU2","Is_SMU4","Is_SMU6","Is_SMU8"]
+outputReaders = [B1500_SMU1,B1500_SMU2,B1500_SMU3,B1500_SMU4]
+K2401.set("outputEnable",True)
+
+#Set even datapath
+dataPath = basePath + "/"+t+"_"+measurementName"_even"
+
+## Run sweep
+sweepAndSave(
+        basePath+fileName,
+        inputHeaders, inputPoints, inputSetters,
+        outputHeaders, outputReaders, saveEnable = True,
+        plotParams = ["Vg","Is_SMU2","Is_SMU4","Is_SMU6","Is_SMU8"]
+)
+
+## Finalise software
+B2200_clear()
 closeInstruments(inputSetters,outputReaders)

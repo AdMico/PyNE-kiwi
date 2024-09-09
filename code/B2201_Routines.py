@@ -26,12 +26,21 @@ def B2201_init():
     # Set B2201 to all relays open
     B2201.write(":ROUT:OPEN:CARD 1")
 
-@B2201.Even
+@B2201.even
 def B2201_even():
-    B2201.write(":ROUT:OPEN:CARD 1") #Reset card before setting -- APM 08SEP24
+    B2201.write(":ROUT:OPEN:CARD 1") # Need to reset card before setting new values -- APM 08SEP24
     B2201.write(":ROUT:CLOS (@11001,10102,11003,10204,11005,10306,11007,10408,10909,10910,10911,10912)")
 
-@B2201.Odd
+@B2201.odd
 def B2201_odd():
-    B2201.write(":ROUT:OPEN:CARD 1")  # Reset card before setting -- APM 08SEP24
+    B2201.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
     B2201.write(":ROUT:CLOS (@10101,11002,10203,11004,10305,11006,10407,11008,10909,10910,10911,10912)")
+
+@B2201.ground
+def B2201_ground():
+    B2201.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
+    B2201.write(":ROUT:CLOS (@11001,11002,11003,11004,11005,11006,11007,11008,10909,10910,10911,10912)")
+
+@B2201.clear
+def B2201_clear():
+    B2201.write(":ROUT:OPEN:CARD 1")

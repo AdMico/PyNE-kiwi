@@ -24,3 +24,4 @@ from B1500_SMU3 import B1500_SMU3
 from B1500_SMU4 import B1500_SMU4
 from SweepFunction import sweepAndSave
 from Instrument import closeInstruments
+from Pi_control import PiMUX

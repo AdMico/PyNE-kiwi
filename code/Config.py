@@ -8,7 +8,7 @@ Brought to PyNE-kiwi v1.0.0 on Fri Aug 30 2024 by APM
 This informs various parts of the software about aspects of your bench setup. Edit as needed for your setup.
 """
 
-from qcodes.instrument_drivers.Keysight.keysightb1500 import constants, MessageBuilder
+from qcodes.instrument_drivers.Keysight.keysightb1500 import constants
 
 ## IMPORTANT -- You need to set PiBox correctly before you first use the software to avoid controlling someone else's hardware by mistake -- see main README.md file
 # Information about which Raspberry Pi you are using (MeasureOne, MeasureTwo, etc)

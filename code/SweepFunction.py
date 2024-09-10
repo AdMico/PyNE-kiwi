@@ -8,7 +8,7 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 Old code from PyNE. If unused send to purgatory and deprecate in future update.
 """
 
-from collections import Iterable
+from collections.abc import Iterable
 import json
 import GlobalMeasID as ID
 import Instrument
@@ -368,23 +368,24 @@ def checkPlotHeaders(inputHeaders,outputHeaders,plotParams):
     else:
         raise ValueError("{} does either not have the right format (either two or 4 parameters) or one of the given values is not found in input or output Headers".format(plotParams))
         
-def sendEmail(targetAddress,measurementName):
-    import smtplib
-    sent_from = 'Christopher.PyNE@nanoelectronics.physics.unsw.edu.au'
-    password = 'p00dles18'
-    subject = 'Measurement finished'
-    body = 'Eureka, your measurement >>>'+measurementName+'<<< has just finished!'
-    email_text = """\  
-    From: %s  
-    To: %s  
-    Subject: %s
-    
-    %s
-    """ % (sent_from, targetAddress, subject, body)
-    mail = smtplib.SMTP('smtp.gmail.com:587') #or 587
-    mail.ehlo()
-    mail.starttls()
-    mail.login(sent_from,password)
-    mail.sendmail(sent_from,targetAddress,email_text)
-    print(('Email sent to: '+targetAddress))
-    mail.close()
+## Deactivated APM 10SEP24
+#def sendEmail(targetAddress,measurementName):
+#    import smtplib
+#    sent_from = 'Christopher.PyNE@nanoelectronics.physics.unsw.edu.au'
+#    password = 'p00dles18'
+#    subject = 'Measurement finished'
+#    body = 'Eureka, your measurement >>>'+measurementName+'<<< has just finished!'
+#    email_text = ""
+#    From: %s
+#    To: %s
+#    Subject: %s
+#
+#    %s
+#    """ % (sent_from, targetAddress, subject, body)
+#    mail = smtplib.SMTP('smtp.gmail.com:587') #or 587
+#    mail.ehlo()
+#    mail.starttls()
+#    mail.login(sent_from,password)
+#    mail.sendmail(sent_from,targetAddress,email_text)
+#    print(('Email sent to: '+targetAddress))
+#    mail.close()

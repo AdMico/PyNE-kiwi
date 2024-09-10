@@ -19,7 +19,8 @@ from Config import B1500VMR1,B1500VMR2,B1500VMR3,B1500VMR4
 from Config import B1500IMR1,B1500IMR2,B1500IMR3,B1500IMR4
 from qcodes.instrument_drivers.Keysight import KeysightB1500
 
-@B1500.Initialisation
+#B1500 = KeysightB1500("SPA", address="USB0::0x0957::0x0001::0001::INSTR")
+
 def B1500_init():
     # Hook up instrument communications connection
     B1500 = KeysightB1500("SPA", address="USB0::0x0957::0x0001::0001::INSTR")
@@ -68,13 +69,13 @@ def B1500_init():
         B1500.smu2.use_high_resolution_adc()
         B1500.smu3.use_high_resolution_adc()
         B1500.smu4.use_high_resolution_adc()
+    # Enable all four SMUs -- Moved to before settings of zero due to gate sweep software error 10SEP24 APM
+    B1500.smu1.enable_outputs()
+    B1500.smu2.enable_outputs()
+    B1500.smu3.enable_outputs()
+    B1500.smu4.enable_outputs()
     # Ensure all four SMUs are zeroed
     B1500.smu1.voltage(0.0)
     B1500.smu2.voltage(0.0)
     B1500.smu3.voltage(0.0)
     B1500.smu4.voltage(0.0)
-    # Enable all four SMUs
-    B1500.smu1.enable_outputs()
-    B1500.smu2.enable_outputs()
-    B1500.smu3.enable_outputs()
-    B1500.smu4.enable_outputs()

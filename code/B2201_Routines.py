@@ -11,36 +11,42 @@ A set of higher level routines for B2201 (i.e., above the usual instrument level
 import pyvisa
 from Config import Diags
 
-@B2201.Initialisation
-def B2201_init():
-    # Hook up instrument communications connection
-    rm = pyvisa.ResourceManager()
-    B2201 = rm.open_resource('GPIB0::22::INSTR')
-    # Get ID from B2201 to check communications function
-    if Diags == "Verbose":
-        print('B2201 ID: ',B2201.query("*IDN?"))
-    # Set B2201 Settings
-    B2201.write(":ROUT:FUNC NCON")
-    B2201.write(":ROUT:CONN:RULE 1,FREE")
-    B2201.write(":ROUT:CONN:SEQ 1,BBM")
-    # Set B2201 to all relays open
-    B2201.write(":ROUT:OPEN:CARD 1")
+class B2201():
+    # Default options to set/get when the instrument is passed into the sweeper
+    #defaultOutput = "sourceLevel"
+    #defaultInput = "senseLevel"
 
-@B2201.even
-def B2201_even():
-    B2201.write(":ROUT:OPEN:CARD 1") # Need to reset card before setting new values -- APM 08SEP24
-    B2201.write(":ROUT:CLOS (@11001,10102,11003,10204,11005,10306,11007,10408,10909,10910,10911,10912)")
+    def __init__(self):
+        super(B2201, self).__init__()
+        self.dev = pyvisa.ResourceManager().open_resource("GPIB0::22::INSTR")
+        print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device
+        self.type ="B2201"  #We can check each instrument for its type and react accordingly
 
-@B2201.odd
-def B2201_odd():
-    B2201.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
-    B2201.write(":ROUT:CLOS (@10101,11002,10203,11004,10305,11006,10407,11008,10909,10910,10911,10912)")
+    def B2201_init(self):
+        # Hook up instrument communications connection -- Commented for future removal 10SEP24 APM
+        #rm = pyvisa.ResourceManager()
+        #B2201 = rm.open_resource('GPIB0::22::INSTR')
+        # Get ID from B2201 to check communications function
+        #if Diags == "Verbose":
+            #print('B2201 ID: ',B2201.query("*IDN?"))
+        # Set B2201 Settings
+        self.dev.write(":ROUT:FUNC NCON")
+        self.dev.write(":ROUT:CONN:RULE 1,FREE")
+        self.dev.write(":ROUT:CONN:SEQ 1,BBM")
+        # Set B2201 to all relays open
+        self.dev.write(":ROUT:OPEN:CARD 1")
 
-@B2201.ground
-def B2201_ground():
-    B2201.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
-    B2201.write(":ROUT:CLOS (@11001,11002,11003,11004,11005,11006,11007,11008,10909,10910,10911,10912)")
+    def B2201_even(self):
+        self.dev.write(":ROUT:OPEN:CARD 1") # Need to reset card before setting new values -- APM 08SEP24
+        self.dev.write(":ROUT:CLOS (@11001,10102,11003,10204,11005,10306,11007,10408,10909,10910,10911,10912)")
 
-@B2201.clear
-def B2201_clear():
-    B2201.write(":ROUT:OPEN:CARD 1")
+    def B2201_odd(self):
+        self.dev.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
+        self.dev.write(":ROUT:CLOS (@10101,11002,10203,11004,10305,11006,10407,11008,10909,10910,10911,10912)")
+
+    def B2201_ground(self):
+        self.dev.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
+        self.dev.write(":ROUT:CLOS (@11001,11002,11003,11004,11005,11006,11007,11008,10909,10910,10911,10912)")
+
+    def B2201_clear(self):
+        self.dev.write(":ROUT:OPEN:CARD 1")

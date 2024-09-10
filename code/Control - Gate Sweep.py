@@ -17,7 +17,8 @@ CtrlPi = PiMUX()
 B1500_init()
 
 ## Initialise B2201
-B2201_init()
+B2201 = B2201()
+B2201.B2201_init()
 
 ## Initialise K2401
 K2401 = Keithley2401(24)
@@ -30,12 +31,12 @@ t=today.strftime("%y%m%d")
 dataPath = basePath + "/"+t+"_"+measurementName
 
 ## Set gate voltage dataset
-start = 0.0; end = 0.5; step = 0.001
+start = 0.0; end = 0.5; step = 0.01
 Vg = np.arange(start,end,step)
 inputPoints = product(Vg)
 
 print("Do the first odd gate sweep")
-B2200_odd()
+B2201.B2201_odd()
 CtrlPi.DP_odd()
 
 ## Set up inputs and outputs
@@ -45,19 +46,19 @@ outputHeaders = ["Is_SMU1","Is_SMU3","Is_SMU5","Is_SMU7"]
 outputReaders = [B1500_SMU1,B1500_SMU2,B1500_SMU3,B1500_SMU4]
 K2401.set("outputEnable",True)
 
-#Set odd datapath
-dataPath = basePath + "/"+t+"_"+measurementName"_odd"
+#Set odd fileName
+fileName = t+"_"+measurementName+"_odd"
 
 ## Run sweep
 sweepAndSave(
-        basePath+fileName,
+        dataPath+fileName,
         inputHeaders, inputPoints, inputSetters,
         outputHeaders, outputReaders, saveEnable = True,
-        plotParams = ["Vg","Is_SMU1","Is_SMU3","Is_SMU5","Is_SMU7"]
+        plotParams = ["Vg","Is_SMU1"]
 )
 
 print("Do the second even gate sweep")
-B2200_even()
+B2201.B2201_even()
 CtrlPi.DP_even()
 
 ## Set up inputs and outputs
@@ -67,17 +68,17 @@ outputHeaders = ["Is_SMU2","Is_SMU4","Is_SMU6","Is_SMU8"]
 outputReaders = [B1500_SMU1,B1500_SMU2,B1500_SMU3,B1500_SMU4]
 K2401.set("outputEnable",True)
 
-#Set even datapath
-dataPath = basePath + "/"+t+"_"+measurementName"_even"
+#Set even fileName
+fileName = t+"_"+measurementName+"_even"
 
 ## Run sweep
 sweepAndSave(
-        basePath+fileName,
+        dataPath+fileName,
         inputHeaders, inputPoints, inputSetters,
         outputHeaders, outputReaders, saveEnable = True,
         plotParams = ["Vg","Is_SMU2","Is_SMU4","Is_SMU6","Is_SMU8"]
 )
 
 ## Finalise software
-B2200_clear()
+B2201.B2201_clear()
 closeInstruments(inputSetters,outputReaders)

@@ -11,12 +11,14 @@ This is then done via 'from Imports import *'. The star imports all functions de
 
 import numpy as np
 import time
-from itertools import product
 import matplotlib.pyplot as plt
+import GlobalMeasID as ID
+from itertools import product
+from datetime import date
 
 from Config import *
 from B1500_Routines import B1500_init
-from B2201_Routines import B2201_init,B2201_odd,B2201_even,B2201_ground,B2201_clear
+from B2201_Routines import B2201
 from K2401_SMU import Keithley2401
 from B1500_SMU1 import B1500_SMU1
 from B1500_SMU2 import B1500_SMU2
@@ -25,3 +27,4 @@ from B1500_SMU4 import B1500_SMU4
 from SweepFunction import sweepAndSave
 from Instrument import closeInstruments
 from Pi_control import PiMUX
+

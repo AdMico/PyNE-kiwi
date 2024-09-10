@@ -19,19 +19,19 @@ from qcodes.instrument_drivers.Keysight.keysightb1500 import MessageBuilder, con
 from Pi_control import PiMUX
 from K2401_SMU import Keithley2401
 
-def B2200_odd():
+def B2201_odd():
     B2201.write(":ROUT:OPEN:CARD 1") # Need to clear before next setting otherwise you get the OR of both settings -- 09SEP24 APM
     B2201.write(":ROUT:CLOS (@10101,11002,10203,11004,10305,11006,10407,11008,10909,10910,10911,10912)")
 
-def B2200_even():
+def B2201_even():
     B2201.write(":ROUT:OPEN:CARD 1") # Need to clear before next setting otherwise you get the OR of both settings -- 09SEP24 APM
     B2201.write(":ROUT:CLOS (@11001,10102,11003,10204,11005,10306,11007,10408,10909,10910,10911,10912)")
 
-def B2200_ground():
+def B2201_ground():
     B2201.write(":ROUT:OPEN:CARD 1") # Need to clear before next setting otherwise you get the OR of both settings -- 09SEP24 APM
     B2201.write(":ROUT:CLOS (@11001,11002,11003,11004,11005,11006,11007,11008,10909,10910,10911,10912)")
 
-def B2200_clear():
+def B2201_clear():
     B2201.write(":ROUT:OPEN:CARD 1")
 
 def B1500_init():
@@ -198,24 +198,24 @@ if __name__ == "__main__": # execute only if this script is run, not when it's b
     smu_run()
     print("")
     time.sleep(3)
-    B2200_odd()
+    B2201_odd()
     CtrlPi.DP_odd()
     print("SMU run - Odd")
     smu_run()
     print("")
     time.sleep(3)
-    B2200_even()
+    B2201_even()
     CtrlPi.DP_even()
     print("SMU run - Even")
     smu_run()
     print("")
     time.sleep(3)
-    B2200_ground()
+    B2201_ground()
     print("SMU run - Ground")
     smu_run()
     print("")
     time.sleep(3)
-    B2200_clear()
+    B2201_clear()
     K2401._setSourceLevel(0.0)
     K2401._setOutputEnable("")
 

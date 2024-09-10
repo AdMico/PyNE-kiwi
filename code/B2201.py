@@ -9,13 +9,8 @@ A set of higher level routines for B2201 (i.e., above the usual instrument level
 """
 
 import pyvisa
-from Config import Diags
 
 class B2201():
-    # Default options to set/get when the instrument is passed into the sweeper
-    #defaultOutput = "sourceLevel"
-    #defaultInput = "senseLevel"
-
     def __init__(self):
         super(B2201, self).__init__()
         self.dev = pyvisa.ResourceManager().open_resource("GPIB0::22::INSTR")
@@ -23,12 +18,6 @@ class B2201():
         self.type ="B2201"  #We can check each instrument for its type and react accordingly
 
     def B2201_init(self):
-        # Hook up instrument communications connection -- Commented for future removal 10SEP24 APM
-        #rm = pyvisa.ResourceManager()
-        #B2201 = rm.open_resource('GPIB0::22::INSTR')
-        # Get ID from B2201 to check communications function
-        #if Diags == "Verbose":
-            #print('B2201 ID: ',B2201.query("*IDN?"))
         # Set B2201 Settings
         self.dev.write(":ROUT:FUNC NCON")
         self.dev.write(":ROUT:CONN:RULE 1,FREE")

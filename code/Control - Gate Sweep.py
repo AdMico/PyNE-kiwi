@@ -21,7 +21,7 @@ B2201 = B2201()
 B2201.B2201_init()
 
 ## Initialise K2401
-K2401 = Keithley2401(24)
+K2401 = K2401(24)
 K2401.setOptions({"beepEnable": False,"sourceMode": "voltage","sourceRange":K2401sourceRange,"senseRange": K2401senseRange,"compliance": K2401compl,"scaleFactor":1})
 
 ## Initialise Datafile

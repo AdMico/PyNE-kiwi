@@ -5,6 +5,8 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @author: Jakob Seidl
 
+Only keeping on top level until basic code completion, then test removal and deprecate 10SEP24 APM
+
 Legacy from PyNE, this may be consigned to purgatory at some point if the routines are no longer used.
 """
 

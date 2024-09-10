@@ -5,7 +5,7 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @author: Adam Micolich
 
-A set of higher level routines for B1500 (i.e., above the usual instrument level for PyNE)
+A set of higher level routines for B1500 -- Deprecated 10SEP24 APM remove in next major update
 """
 
 from Config import B1500AutoZero,B1500ADCSet,B1500NPLC

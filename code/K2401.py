@@ -1,11 +1,11 @@
 """
-Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
+Brought to PyNE-kiwi v1.1.0 on Tue Sep 10 2024 by APM
 
 @developers: Adam Micolich
 
 @author: Jakob Seidl
 
-Standard SMU setup for Keithley 2401
+SMU setup for Keithley 2401 modified for PyNE-kiwi use
 """
 
 import pyvisa as visa
@@ -14,21 +14,21 @@ import numpy as np
 import time
 
 @Instrument.enableOptions
-class Keithley2401(Instrument.Instrument):
+class K2401(Instrument.Instrument):
     # Default options to set/get when the instrument is passed into the sweeper
     defaultOutput = "sourceLevel"
     defaultInput = "senseLevel"
 
     def __init__(self, address):
-        super(Keithley2401, self).__init__()
+        super(K2401, self).__init__()
         self.dev = visa.ResourceManager().open_resource("GPIB0::"+str(address)+"::INSTR")
         print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device        
-        self.type ="Keithley2401"  #We can check each instrument for its type and react accordingly
+        self.type ="K2401"  #We can check each instrument for its type and react accordingly
         self.scaleFactor = 1.0
         self.currentSourceSetpoint = float('nan')
         self.hitCompliance = []
         self.sourceMode = self._getSourceMode()
-        self.sourceLimits = 100 #Dummy number to be replaced by setSourceRange function
+        self.sourceLimits = 1.0 #Dummy number to be replaced by setSourceRange function
 
     @Instrument.addOptionSetter("beepEnable")
     def _setBeepEnable(self, enable):

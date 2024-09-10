@@ -3,7 +3,7 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @developers: Adam Micolich
 
-@author: Jakob Seidl
+@author: Adam Micolich
 
 This module's entire purpose is to load all required modules in the user's actual control script.
 This is then done via 'from Imports import *'. The star imports all functions defined in various modules into one namespace so that you can call any function directly.
@@ -17,14 +17,8 @@ from itertools import product
 from datetime import date
 
 from Config import *
-from B1500_Routines import B1500_init
-from B2201_Routines import B2201
-from K2401_SMU import Keithley2401
-from B1500_SMU1 import B1500_SMU1
-from B1500_SMU2 import B1500_SMU2
-from B1500_SMU3 import B1500_SMU3
-from B1500_SMU4 import B1500_SMU4
-from SweepFunction import sweepAndSave
-from Instrument import closeInstruments
+from B1500 import B1500
+from B2201 import B2201
+from K2401 import K2401
 from Pi_control import PiMUX
 

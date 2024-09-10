@@ -23,15 +23,15 @@ Diags = "Verbose"
 basePath = '../data'
 
 # B1500 Settings -- Global
-B1500AutoZero = True
-B1500ADCSet = "HighSpeed" #Alternatives are HighSpeed and HighRes
+B1500AutoZero = False
+B1500ADCSet = "HighRes" #Alternatives are HighSpeed and HighRes
 B1500NPLC = 1 #Takes values from 1 to 100 (Int)
 
 # B1500 Settings -- SMU1 Specific
 VS_SMU1 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
 B1500ICOM1 = 1e-3 #Compliance current in amps
 B1500VMR1 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
-B1500IMR1 = constants.IMeasRange.AUTO #Ideally AUTO or MIN_100nA -- other values in constants but know what you're doing first
+B1500IMR1 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
 B1500VOR1 = constants.VOutputRange.AUTO #AUTO seems only good selection here as the MIN settings cap downwards not upward
 B1500MCR1 = constants.IOutputRange.AUTO #Leave as AUTO
 B1500MM1 = constants.MM.Mode.SPOT #Can't see any reasons to change from SPOT
@@ -42,7 +42,7 @@ B1500Filt1 = False #Default is False, other option is True
 VS_SMU2 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
 B1500ICOM2 = 1e-3 #Compliance current in amps
 B1500VMR2 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
-B1500IMR2 = constants.IMeasRange.AUTO #Ideally AUTO or MIN_100nA -- other values in constants but know what you're doing first
+B1500IMR2 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
 B1500VOR2 = constants.VOutputRange.AUTO #AUTO seems only good selection here as the MIN settings cap downwards not upward
 B1500MCR2 = constants.IOutputRange.AUTO #Leave as AUTO
 B1500MM2 = constants.MM.Mode.SPOT #Can't see any reasons to change from SPOT
@@ -53,7 +53,7 @@ B1500Filt2 = False #Default is False, other option is True
 VS_SMU3 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
 B1500ICOM3 = 1e-3 #Compliance current in amps
 B1500VMR3 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
-B1500IMR3 = constants.IMeasRange.AUTO #Ideally AUTO or MIN_100nA -- other values in constants but know what you're doing first
+B1500IMR3 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
 B1500VOR3 = constants.VOutputRange.AUTO #AUTO seems only good selection here as the MIN settings cap downwards not upward
 B1500MCR3 = constants.IOutputRange.AUTO #Leave as AUTO
 B1500MM3 = constants.MM.Mode.SPOT #Can't see any reasons to change from SPOT
@@ -64,7 +64,7 @@ B1500Filt3 = False #Default is False, other option is True
 VS_SMU4 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
 B1500ICOM4 = 1e-3 #Compliance current in amps
 B1500VMR4 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
-B1500IMR4 = constants.IMeasRange.AUTO #Ideally AUTO or MIN_100nA -- other values in constants but know what you're doing first
+B1500IMR4 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
 B1500VOR4 = constants.VOutputRange.AUTO #AUTO seems only good selection here as the MIN settings cap downwards not upward
 B1500MCR4 = constants.IOutputRange.AUTO #Leave as AUTO
 B1500MM4 = constants.MM.Mode.SPOT #Can't see any reasons to change from SPOT

@@ -15,6 +15,7 @@ clean-up and trimming of excess baggage.
 import numpy as np
 import time
 from qcodes.instrument_drivers.Keysight import KeysightB1500
+from qcodes.instrument_drivers.Keysight.keysightb1500 import MessageBuilder, constants
 from Config import B1500AutoZero,B1500ADCSet,B1500NPLC
 from Config import B1500MM1,B1500MM2,B1500MM3,B1500MM4
 from Config import B1500CMM1,B1500CMM2,B1500CMM3,B1500CMM4
@@ -44,35 +45,15 @@ class B1500():
         self.dev.smu2.measurement_mode(B1500MM2)
         self.dev.smu3.measurement_mode(B1500MM3)
         self.dev.smu4.measurement_mode(B1500MM4)
-        # B1500 Compliance Measure Mode
-        self.dev.smu1.measurement_operation_mode(B1500CMM1)
-        self.dev.smu2.measurement_operation_mode(B1500CMM2)
-        self.dev.smu3.measurement_operation_mode(B1500CMM3)
-        self.dev.smu4.measurement_operation_mode(B1500CMM4)
         # B1500 Source Configuration
         self.dev.smu1.source_config(output_range=B1500VOR1, compliance=B1500ICOM1, compl_polarity=None,
-                                 min_compliance_range=B1500MCR1)
+                                    min_compliance_range=B1500MCR1)
         self.dev.smu2.source_config(output_range=B1500VOR2, compliance=B1500ICOM2, compl_polarity=None,
-                                 min_compliance_range=B1500MCR2)
+                                    min_compliance_range=B1500MCR2)
         self.dev.smu3.source_config(output_range=B1500VOR3, compliance=B1500ICOM3, compl_polarity=None,
-                                 min_compliance_range=B1500MCR3)
+                                    min_compliance_range=B1500MCR3)
         self.dev.smu4.source_config(output_range=B1500VOR4, compliance=B1500ICOM4, compl_polarity=None,
-                                 min_compliance_range=B1500MCR4)
-        # B1500 Voltage Measure Range Setting
-        self.dev.smu1.v_measure_range_config(v_measure_range=B1500VMR1)
-        self.dev.smu2.v_measure_range_config(v_measure_range=B1500VMR2)
-        self.dev.smu3.v_measure_range_config(v_measure_range=B1500VMR3)
-        self.dev.smu4.v_measure_range_config(v_measure_range=B1500VMR4)
-        # B1500 Current Measure Range Setting
-        self.dev.smu1.i_measure_range_config(i_measure_range=B1500IMR1)
-        self.dev.smu2.i_measure_range_config(i_measure_range=B1500IMR2)
-        self.dev.smu3.i_measure_range_config(i_measure_range=B1500IMR3)
-        self.dev.smu4.i_measure_range_config(i_measure_range=B1500IMR4)
-        # B1500 Filter Settings
-        self.dev.smu1.enable_filter(B1500Filt1)
-        self.dev.smu2.enable_filter(B1500Filt2)
-        self.dev.smu3.enable_filter(B1500Filt3)
-        self.dev.smu4.enable_filter(B1500Filt4)
+                                    min_compliance_range=B1500MCR4)
         # B1500 Analog-Digital Converter Settings
         if B1500ADCSet == "HighSpeed":
             self.dev.use_nplc_for_high_speed_adc(n=B1500NPLC)
@@ -86,6 +67,26 @@ class B1500():
             self.dev.smu2.use_high_resolution_adc()
             self.dev.smu3.use_high_resolution_adc()
             self.dev.smu4.use_high_resolution_adc()
+        # B1500 Filter Settings
+        self.dev.smu1.enable_filter(B1500Filt1)
+        self.dev.smu2.enable_filter(B1500Filt2)
+        self.dev.smu3.enable_filter(B1500Filt3)
+        self.dev.smu4.enable_filter(B1500Filt4)
+        # B1500 Compliance Measure Mode
+        self.dev.smu1.measurement_operation_mode(B1500CMM1)
+        self.dev.smu2.measurement_operation_mode(B1500CMM2)
+        self.dev.smu3.measurement_operation_mode(B1500CMM3)
+        self.dev.smu4.measurement_operation_mode(B1500CMM4)
+        # B1500 Voltage Measure Range Setting
+        self.dev.smu1.v_measure_range_config(v_measure_range=B1500VMR1)
+        self.dev.smu2.v_measure_range_config(v_measure_range=B1500VMR2)
+        self.dev.smu3.v_measure_range_config(v_measure_range=B1500VMR3)
+        self.dev.smu4.v_measure_range_config(v_measure_range=B1500VMR4)
+        # B1500 Current Measure Range Setting
+        self.dev.smu1.i_measure_range_config(i_measure_range=B1500IMR1)
+        self.dev.smu2.i_measure_range_config(i_measure_range=B1500IMR2)
+        self.dev.smu3.i_measure_range_config(i_measure_range=B1500IMR3)
+        self.dev.smu4.i_measure_range_config(i_measure_range=B1500IMR4)
         # Enable all four SMUs -- Moved to before settings of zero due to gate sweep software error 10SEP24 APM
         self.dev.smu1.enable_outputs()
         self.dev.smu2.enable_outputs()
@@ -97,47 +98,47 @@ class B1500():
         self.dev.smu3.voltage(0.0)
         self.dev.smu4.voltage(0.0)
 
-    def B1500_V1(self,value):
-        if value:
-            self.dev.smu1.voltage(value)
-        else:
-            self.dev.smu1.voltage()
+    def B1500_setV1(self,value):
+        self.dev.smu1.voltage(value)
 
-    def B1500_V2(self,value):
-        if value:
-            self.dev.smu2.voltage(value)
-        else:
-            self.dev.smu2.voltage()
+    def B1500_setV2(self,value):
+        self.dev.smu2.voltage(value)
 
-    def B1500_V3(self,value):
-        if value:
-            self.dev.smu3.voltage(value)
-        else:
-            self.dev.smu3.voltage()
+    def B1500_setV3(self,value):
+        self.dev.smu3.voltage(value)
 
-    def B1500_V4(self,value):
-        if value:
-            self.dev.smu4.voltage(value)
-        else:
-            self.dev.smu4.voltage()
+    def B1500_setV4(self,value):
+        self.dev.smu4.voltage(value)
 
-    def B1500_Vall(self,value): # Currently write only might revise later -- 10SEP24 APM
+    def B1500_setVall(self,value): # Currently write only might revise later -- 10SEP24 APM
         self.dev.smu1.voltage(value)
         self.dev.smu2.voltage(value)
         self.dev.smu3.voltage(value)
         self.dev.smu4.voltage(value)
 
-    def B1500_I1(self):
-        self.dev.smu1.current()
+    def B1500_getV1(self):
+        return self.dev.smu1.voltage()
 
-    def B1500_I2(self):
-        self.dev.smu2.current()
+    def B1500_getV2(self):
+        return self.dev.smu2.voltage()
 
-    def B1500_I3(self):
-        self.dev.smu3.current()
+    def B1500_getV3(self):
+        return self.dev.smu3.voltage()
 
-    def B1500_I4(self):
-        self.dev.smu4.current()
+    def B1500_getV4(self):
+        return self.dev.smu4.voltage()
+
+    def B1500_getI1(self):
+        return self.dev.smu1.current()
+
+    def B1500_getI2(self):
+        return self.dev.smu2.current()
+
+    def B1500_getI3(self):
+        return self.dev.smu3.current()
+
+    def B1500_getI4(self):
+        return self.dev.smu4.current()
 
     def B1500_err(self):
         err = self.dev.error_message()

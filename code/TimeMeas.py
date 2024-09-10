@@ -5,7 +5,6 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @author: Adam Micolich
 
-
 Time-sweep program from PyNE. If unused here move to purgatory and deprecate in a future version
 """
 

@@ -5,7 +5,7 @@ Brought to PyNE-kiwi v1.0.0 on Mon Sep 2 2024 by APM
 
 @author: Jakob Seidl
 
-A bunch of useful utility functions for various handling tasks in PyNE -- Possible future deprecation 10SEP24 APM
+A bunch of useful utility functions for various handling tasks in PyNE -- Definite future deprecation 10SEP24 APM
 """
 
 import numpy as np

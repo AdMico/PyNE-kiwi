@@ -19,8 +19,15 @@ PiBox = 'WellyPi'
 # Use "Verbose" for information prints on and "Silent" to suppress.
 Diags = "Verbose"
 
-# PyNE-kiwi settings
+# PyNE-kiwi data settings
 basePath = '../data'
+
+# GateSweeper Settings
+VgStart = -0.5 #V -- Settings from Danica's specs 14SEP24 APM
+VgStop = 1.0 #V -- Settings from Danica's specs 14SEP24 APM
+VgStep = 20E-3 #V -- Settings from Danica's specs 14SEP24 APM
+VS = 0.1 #V -- Settings from Danica's specs 14SEP24 APM (n.b., this sets the B1500 SMU outputs below)
+Settle = 1 #s -- Settle time for measurement
 
 # B1500 Settings -- Global
 B1500AutoZero = False
@@ -28,7 +35,7 @@ B1500ADCSet = "HighRes" #Alternatives are HighSpeed and HighRes
 B1500NPLC = 1 #Takes values from 1 to 100 (Int)
 
 # B1500 Settings -- SMU1 Specific
-VS_SMU1 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
+VS_SMU1 = VS # Source bias for SMU 1 in volts -- 19SEP24 APM
 B1500ICOM1 = 1e-3 #Compliance current in amps
 B1500VMR1 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
 B1500IMR1 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
@@ -39,7 +46,7 @@ B1500CMM1 = constants.CMM.Mode.COMPLIANCE_SIDE #COMPLIANCE_SIDE, FORCE_SIDE, CUR
 B1500Filt1 = False #Default is False, other option is True
 
 # B1500 Settings -- SMU2 Specific
-VS_SMU2 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
+VS_SMU2 = VS # Source bias for SMU 2 in volts -- 19SEP24 APM
 B1500ICOM2 = 1e-3 #Compliance current in amps
 B1500VMR2 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
 B1500IMR2 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
@@ -50,7 +57,7 @@ B1500CMM2 = constants.CMM.Mode.COMPLIANCE_SIDE #COMPLIANCE_SIDE, FORCE_SIDE, CUR
 B1500Filt2 = False #Default is False, other option is True
 
 # B1500 Settings -- SMU3 Specific
-VS_SMU3 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
+VS_SMU3 = VS # Source bias for SMU 3 in volts -- 19SEP24 APM
 B1500ICOM3 = 1e-3 #Compliance current in amps
 B1500VMR3 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
 B1500IMR3 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM
@@ -61,7 +68,7 @@ B1500CMM3 = constants.CMM.Mode.COMPLIANCE_SIDE #COMPLIANCE_SIDE, FORCE_SIDE, CUR
 B1500Filt3 = False #Default is False, other option is True
 
 # B1500 Settings -- SMU4 Specific
-VS_SMU4 = 0.5 # Source bias for SMU 1 in volts for gate sweeps
+VS_SMU4 = VS # Source bias for SMU 4 in volts -- 19SEP24 APM
 B1500ICOM4 = 1e-3 #Compliance current in amps
 B1500VMR4 = constants.VMeasRange.FIX_2V #Ideally AUTO, FIX_2V, FIX_0V5 or FIX_0V2 -- other values in constants but know what you're doing first
 B1500IMR4 = constants.IMeasRange.MIN_100mA #Ideally MIN_100nA -- other values in constants but know what you're doing first -- AUTO produces visa timeout 10SEP24 APM

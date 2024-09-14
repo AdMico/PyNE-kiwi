@@ -17,7 +17,7 @@ class B2201():
         print((self.dev.query("*IDN?"))) # Probably should query and check we have the right device
         self.type ="B2201"  #We can check each instrument for its type and react accordingly
 
-    def B2201_init(self):
+    def init(self):
         # Set B2201 Settings
         self.dev.write(":ROUT:FUNC NCON")
         self.dev.write(":ROUT:CONN:RULE 1,FREE")
@@ -25,17 +25,17 @@ class B2201():
         # Set B2201 to all relays open
         self.dev.write(":ROUT:OPEN:CARD 1")
 
-    def B2201_even(self):
+    def even(self):
         self.dev.write(":ROUT:OPEN:CARD 1") # Need to reset card before setting new values -- APM 08SEP24
         self.dev.write(":ROUT:CLOS (@11001,10102,11003,10204,11005,10306,11007,10408,10909,10910,10911,10912)")
 
-    def B2201_odd(self):
+    def odd(self):
         self.dev.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
         self.dev.write(":ROUT:CLOS (@10101,11002,10203,11004,10305,11006,10407,11008,10909,10910,10911,10912)")
 
-    def B2201_ground(self):
+    def ground(self):
         self.dev.write(":ROUT:OPEN:CARD 1")  # Need to reset card before setting new values -- APM 08SEP24
         self.dev.write(":ROUT:CLOS (@11001,11002,11003,11004,11005,11006,11007,11008,10909,10910,10911,10912)")
 
-    def B2201_clear(self):
+    def clear(self):
         self.dev.write(":ROUT:OPEN:CARD 1")

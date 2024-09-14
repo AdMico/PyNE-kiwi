@@ -15,7 +15,6 @@ clean-up and trimming of excess baggage.
 import numpy as np
 import time
 from qcodes.instrument_drivers.Keysight import KeysightB1500
-from qcodes.instrument_drivers.Keysight.keysightb1500 import MessageBuilder, constants
 from Config import B1500AutoZero,B1500ADCSet,B1500NPLC
 from Config import B1500MM1,B1500MM2,B1500MM3,B1500MM4
 from Config import B1500CMM1,B1500CMM2,B1500CMM3,B1500CMM4
@@ -37,7 +36,7 @@ class B1500():
         self.sourceMode = "voltage"
         self.sourceLimits = 2 #Dummy number to be replaced by setSourceRange function, 2V used currently re: Config.py -- 08SEP24 APM
 
-    def B1500_init(self):
+    def init(self):
         # B1500 AutoZero
         self.dev.autozero_enabled(B1500AutoZero)
         # B1500 Measurement Mode
@@ -98,49 +97,49 @@ class B1500():
         self.dev.smu3.voltage(0.0)
         self.dev.smu4.voltage(0.0)
 
-    def B1500_setV1(self,value):
+    def setV1(self,value):
         self.dev.smu1.voltage(value)
 
-    def B1500_setV2(self,value):
+    def setV2(self,value):
         self.dev.smu2.voltage(value)
 
-    def B1500_setV3(self,value):
+    def setV3(self,value):
         self.dev.smu3.voltage(value)
 
-    def B1500_setV4(self,value):
+    def setV4(self,value):
         self.dev.smu4.voltage(value)
 
-    def B1500_setVall(self,value): # Currently write only might revise later -- 10SEP24 APM
+    def setVall(self,value): # Currently write only might revise later -- 10SEP24 APM
         self.dev.smu1.voltage(value)
         self.dev.smu2.voltage(value)
         self.dev.smu3.voltage(value)
         self.dev.smu4.voltage(value)
 
-    def B1500_getV1(self):
+    def getV1(self):
         return self.dev.smu1.voltage()
 
-    def B1500_getV2(self):
+    def getV2(self):
         return self.dev.smu2.voltage()
 
-    def B1500_getV3(self):
+    def getV3(self):
         return self.dev.smu3.voltage()
 
-    def B1500_getV4(self):
+    def getV4(self):
         return self.dev.smu4.voltage()
 
-    def B1500_getI1(self):
+    def getI1(self):
         return self.dev.smu1.current()
 
-    def B1500_getI2(self):
+    def getI2(self):
         return self.dev.smu2.current()
 
-    def B1500_getI3(self):
+    def getI3(self):
         return self.dev.smu3.current()
 
-    def B1500_getI4(self):
+    def getI4(self):
         return self.dev.smu4.current()
 
-    def B1500_err(self):
+    def err(self):
         err = self.dev.error_message()
         return err
 

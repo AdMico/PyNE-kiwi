@@ -20,7 +20,6 @@ class PiMUX:
             IP = '129.94.163.75'
         if PiBox == 'WellyPi':
             IP = '10.63.3.38'
-#        pigpio.pi('soft',8888)
         self.IP = IP
         self.PiFactory = PiGPIOFactory(host=self.IP)
 
@@ -77,13 +76,13 @@ class PiMUX:
         time.sleep(0.001) # Tested at 1ms wait being ok APM 26Feb24
         self.DP16.off()
 
-    def DP_even(self): # Switches all the even device pins to SMBs
+    def even(self): # Switches all the even device pins to SMBs
         self.DP9on()
         self.DP11on()
         self.DP13on()
         self.DP15on()
 
-    def DP_odd(self): # Switches all the odd device pins to SMBs
+    def odd(self): # Switches all the odd device pins to SMBs
         self.DP10on()
         self.DP12on()
         self.DP14on()
@@ -92,18 +91,18 @@ class PiMUX:
 if __name__ == "__main__": # execute only if this script is run, not when it's being imported
     my_pi = PiMUX()
     time.sleep(1.0)
-    my_pi.DP_odd() # comment to switch on/off as needed.
+    my_pi.odd() # comment to switch on/off as needed.
     time.sleep(1.5)
-    my_pi.DP_even()
+    my_pi.even()
     time.sleep(1.5)
-    my_pi.DP_odd()  # comment to switch on/off as needed.
+    my_pi.odd()  # comment to switch on/off as needed.
     time.sleep(1.5)
-    my_pi.DP_even()
+    my_pi.even()
     time.sleep(1.5)
-    my_pi.DP_odd()  # comment to switch on/off as needed.
+    my_pi.odd()  # comment to switch on/off as needed.
     time.sleep(1.5)
-    my_pi.DP_even()
+    my_pi.even()
     time.sleep(1.5)
-    my_pi.DP_odd()  # comment to switch on/off as needed.
+    my_pi.odd()  # comment to switch on/off as needed.
     time.sleep(1.5)
-    my_pi.DP_even()
+    my_pi.even()

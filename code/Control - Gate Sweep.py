@@ -165,7 +165,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         B2201.odd()
         ## Initialise File Handling for odd sweep
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_odd_forward' + ' started at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_odd_forward' + ' started at: ' + str(datetime.now()) + '\n')
         with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_odd_forward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['Vg (V)', 'Is_1 (A)', 'Is_3 (A)', 'Is_5 (A)', 'Is_7 (A)'])
@@ -184,7 +184,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
                 writer = csv.writer(f)
                 writer.writerow([str(VgForward[i]), str(I_1.iloc[i,0]), str(I_3.iloc[i,0]),str(I_5.iloc[i,0]), str(I_7.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) +  '_odd_backward' + ' started at: ' + str(
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) +  '_odd_backward' + ' started at: ' + str(
                 datetime.now()) + '\n')
         with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_odd_backward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
@@ -203,7 +203,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
                 writer = csv.writer(f)
                 writer.writerow([str(VgBackward[i]), str(I_1.iloc[i,0]), str(I_3.iloc[i,0]),str(I_5.iloc[i,0]), str(I_7.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_odd' + ' finished at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_odd' + ' finished at: ' + str(datetime.now()) + '\n')
         print("End sweep: ", nRun)
         nRun += 1
         GateSweeper.updateGUI()
@@ -217,7 +217,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         B2201.even()
         ## Initialise File Handling for even sweep
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_even-forward' + ' started at: ' + str(
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_even-forward' + ' started at: ' + str(
                 datetime.now()) + '\n')
         with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_even_forward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
@@ -237,7 +237,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
                 writer = csv.writer(f)
                 writer.writerow([str(VgForward[i]), str(I_2.iloc[i,0]), str(I_4.iloc[i,0]), str(I_6.iloc[i,0]), str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_even-backward' + ' started at: ' + str(
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_even-backward' + ' started at: ' + str(
                 datetime.now()) + '\n')
         with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_even_backward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
@@ -256,7 +256,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
                 writer = csv.writer(f)
                 writer.writerow([str(VgBackward[i]), str(I_2.iloc[i,0]), str(I_4.iloc[i,0]), str(I_6.iloc[i,0]), str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_even' + ' finished at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_even' + ' finished at: ' + str(datetime.now()) + '\n')
         print("End sweep: ", nRun)
         nRun += 1
         GateSweeper.updateGUI()
@@ -276,7 +276,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         ## Initialise File Handling for even sweep
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
             fLog.write(
-                'Measurement ' + measurementName + '_' + str(nRun) + '_switched-forward' + ' started at: ' + str(datetime.now()) + '\n')
+                'Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_switched-forward' + ' started at: ' + str(datetime.now()) + '\n')
         with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_both_forward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(
@@ -307,7 +307,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
                 writer.writerow([str(VgForward[i]),str(I_1.iloc[i,0]),str(I_2.iloc[i,0]),str(I_3.iloc[i,0]),str(I_4.iloc[i,0]),str(I_5.iloc[i,0]),str(I_6.iloc[i,0]),str(I_7.iloc[i,0]),str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
             fLog.write(
-                'Measurement ' + measurementName + '_' + str(nRun) + '_both-backward' + ' started at: ' + str(datetime.now()) + '\n')
+                'Measurement ' + measurementName + 'Sweep ' + str(nRun) + '_both-backward' + ' started at: ' + str(datetime.now()) + '\n')
         with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_both_backward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(
@@ -336,7 +336,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
                 writer = csv.writer(f)
                 writer.writerow([str(VgBackward[i]),str(I_1.iloc[i,0]),str(I_2.iloc[i,0]),str(I_3.iloc[i,0]),str(I_4.iloc[i,0]),str(I_5.iloc[i,0]),str(I_6.iloc[i,0]),str(I_7.iloc[i,0]),str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + ' both' + ' finished at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + 'Sweep ' + str(nRun) + ' both' + ' finished at: ' + str(datetime.now()) + '\n')
         print("End sweep: ",nRun)
         nRun += 1
         GateSweeper.updateGUI()

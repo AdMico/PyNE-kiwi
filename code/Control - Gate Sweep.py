@@ -16,6 +16,7 @@ import csv
 import pandas as pd
 import GlobalMeasID as ID
 import tkinter as tk
+import threading
 from Config import basePath,PiBox,B1500ADCSet,B1500NPLC,K2401compl,Diags
 from Config import VgStart,VgStop,VgStep,Settle
 from Config import VS_SMU1,VS_SMU2,VS_SMU3,VS_SMU4
@@ -113,7 +114,7 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         sweepArray = np.arange(start,np.round(target+sign*stepsize,decimals=5),sign*stepsize) #The rounding makes function more predictable
         return sweepArray
 
-    def updateGUI():  # Updates the data in the GUI -- last edited APM 19Jan24
+    def updateGUI(self):  # Updates the data in the GUI -- last edited APM 19Jan24
         global nRun
         assay = tk.Label(root, text=('Assay Number: ' + t + '_' + measurementName), bg="purple")
         assay.grid(row=0, column=0, padx=5, pady=5)
@@ -121,22 +122,22 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         run.grid(row=1, column=0, padx=5, pady=5)
         root.update_idletasks()
 
-    def oddStart():  # Operates the Grab Start button in the GUI
+    def oddStart(self):  # Operates the Grab Start button in the GUI
         updateThread = threading.Thread(target=GateSweeper.gateSweepOdd)
         updateThread.daemon = True
         updateThread.start()
 
-    def evenStart():  # Operates the Grab Start button in the GUI
+    def evenStart(self):  # Operates the Grab Start button in the GUI
         updateThread = threading.Thread(target=GateSweeper.gateSweepEven)
         updateThread.daemon = True
         updateThread.start()
 
-    def bothStart():  # Operates the Grab Start button in the GUI
+    def bothStart(self):  # Operates the Grab Start button in the GUI
         updateThread = threading.Thread(target=GateSweeper.gateSweepBoth)
         updateThread.daemon = True
         updateThread.start()
 
-    def switchedStart():  # Operates the Grab Start button in the GUI
+    def switchedStart(self):  # Operates the Grab Start button in the GUI
         updateThread = threading.Thread(target=GateSweeper.gateSweepSwitched)
         updateThread.daemon = True
         updateThread.start()
@@ -156,16 +157,16 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         ID.increaseID()
 
     def gateSweepOdd(self): #Just sweep the odd device pins
-        global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8
+        global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,nRun
         if Diags == "Verbose":
-            print("Starting Odd sweeps")
+            print("Starting odd sweep: ",nRun)
         ## Set Odd Configuration
         CtrlPi.odd()
         B2201.odd()
         ## Initialise File Handling for odd sweep
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun + '_odd_forward' + ' started at: ' + str(datetime.now()) + '\n')
-        with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_odd_forward.csv', 'w', newline='') as f:
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_odd_forward' + ' started at: ' + str(datetime.now()) + '\n')
+        with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_odd_forward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['Vg (V)', 'Is_1 (A)', 'Is_3 (A)', 'Is_5 (A)', 'Is_7 (A)'])
         ##  Start the odd sweep algorithm -- Turn into a proper function later 14SEP24 APM
@@ -179,13 +180,13 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
             I_5[i] = B1500.getI3()
             I_7[i] = B1500.getI4()
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
-            with open(dataPath + '/' + t + '_' + measurementName + '_odd_forward.csv', 'a', newline='') as f:
+            with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_odd_forward.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(VgForward[i]), str(I_1.iloc[i,0]), str(I_3.iloc[i,0]),str(I_5.iloc[i,0]), str(I_7.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun +  '_odd_backward' + ' started at: ' + str(
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) +  '_odd_backward' + ' started at: ' + str(
                 datetime.now()) + '\n')
-        with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_odd_backward.csv', 'w', newline='') as f:
+        with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_odd_backward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['Vg (V)', 'Is_1 (A)', 'Is_3 (A)', 'Is_5 (A)', 'Is_7 (A)'])
         for i in range(len(VgBackward)):
@@ -198,25 +199,27 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
             I_5[i] = B1500.getI3()
             I_7[i] = B1500.getI4()
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
-            with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun +  '_odd_backward.csv', 'a', newline='') as f:
+            with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) +  '_odd_backward.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(VgBackward[i]), str(I_1.iloc[i,0]), str(I_3.iloc[i,0]),str(I_5.iloc[i,0]), str(I_7.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun + '_odd' + ' finished at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_odd' + ' finished at: ' + str(datetime.now()) + '\n')
+        print("End sweep: ", nRun)
         nRun += 1
+        GateSweeper.updateGUI()
 
     def gateSweepEven(self): #Just sweep the even device pins
-        global VgForward, VgBackward, I_1, I_2, I_3, I_4, I_5, I_6, I_7, I_8
+        global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,nRun
         if Diags == "Verbose":
-            print("Starting even sweeps")
+            print("Starting even sweep: ",nRun)
         ## Set Even Configuration
         CtrlPi.even()
         B2201.even()
         ## Initialise File Handling for even sweep
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun + '_even-forward' + ' started at: ' + str(
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_even-forward' + ' started at: ' + str(
                 datetime.now()) + '\n')
-        with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_even_forward.csv', 'w', newline='') as f:
+        with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_even_forward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['Vg (V)', 'Is_2 (A)', 'Is_4 (A)', 'Is_6 (A)', 'Is_8 (A)'])
         ##  Start the even sweep algorithm -- Turn into a proper function later 14SEP24 APM
@@ -230,13 +233,13 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
             I_6[i] = B1500.getI3()
             I_8[i] = B1500.getI4()
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
-            with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_even_forward.csv', 'a', newline='') as f:
+            with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_even_forward.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(VgForward[i]), str(I_2.iloc[i,0]), str(I_4.iloc[i,0]), str(I_6.iloc[i,0]), str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun + '_even-backward' + ' started at: ' + str(
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_even-backward' + ' started at: ' + str(
                 datetime.now()) + '\n')
-        with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_even_backward.csv', 'w', newline='') as f:
+        with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_even_backward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(['Vg (V)', 'Is_2 (A)', 'Is_4 (A)', 'Is_6 (A)', 'Is_8 (A)'])
         for i in range(len(VgBackward)):
@@ -249,30 +252,32 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
             I_6[i] = B1500.getI3()
             I_8[i] = B1500.getI4()
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
-            with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_even_backward.csv', 'a', newline='') as f:
+            with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_even_backward.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(VgBackward[i]), str(I_2.iloc[i,0]), str(I_4.iloc[i,0]), str(I_6.iloc[i,0]), str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun + '_even' + ' finished at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + '_even' + ' finished at: ' + str(datetime.now()) + '\n')
+        print("End sweep: ", nRun)
         nRun += 1
+        GateSweeper.updateGUI()
 
     def gateSweepBoth(self): #Sweep the odd device pins first then the even device pins
-        global VgForward, VgBackward, I_1, I_2, I_3, I_4, I_5, I_6, I_7, I_8
+        global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,nRun
         GateSweeper.gateSweepOdd()
         GateSweeper.gateSweepEven()
 
     def gateSweepSwitched(self): #Sweep with switching from odd to even each gate point
-        global VgForward, VgBackward, I_1, I_2, I_3, I_4, I_5, I_6, I_7, I_8
+        global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,nRun
         if Diags == "Verbose":
-            print("Starting switched sweeps")
+            print("Starting switched sweep: ",nRun)
         ## Set to odd for start of switched Configuration
         CtrlPi.odd()
         B2201.odd()
         ## Initialise File Handling for even sweep
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
             fLog.write(
-                'Measurement ' + measurementName + '_' + nRun + '_switched-forward' + ' started at: ' + str(datetime.now()) + '\n')
-        with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_both_forward.csv', 'w', newline='') as f:
+                'Measurement ' + measurementName + '_' + str(nRun) + '_switched-forward' + ' started at: ' + str(datetime.now()) + '\n')
+        with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_both_forward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(
                 ['Vg (V)', 'Is_1 (A)', 'Is_2 (A)', 'Is_3 (A)', 'Is_4 (A)', 'Is_5 (A)', 'Is_6 (A)', 'Is_7 (A)',
@@ -297,13 +302,13 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
             CtrlPi.odd()
             B2201.odd()
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
-            with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_both_forward.csv', 'a', newline='') as f:
+            with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_both_forward.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(VgForward[i]),str(I_1.iloc[i,0]),str(I_2.iloc[i,0]),str(I_3.iloc[i,0]),str(I_4.iloc[i,0]),str(I_5.iloc[i,0]),str(I_6.iloc[i,0]),str(I_7.iloc[i,0]),str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
             fLog.write(
-                'Measurement ' + measurementName + '_' + nRun + '_both-backward' + ' started at: ' + str(datetime.now()) + '\n')
-        with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_both_backward.csv', 'w', newline='') as f:
+                'Measurement ' + measurementName + '_' + str(nRun) + '_both-backward' + ' started at: ' + str(datetime.now()) + '\n')
+        with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_both_backward.csv', 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(
                 ['Vg (V)', 'Is_1 (A)', 'Is_2 (A)', 'Is_3 (A)', 'Is_4 (A)', 'Is_5 (A)', 'Is_6 (A)', 'Is_7 (A)',
@@ -327,12 +332,14 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
             CtrlPi.odd()
             B2201.odd()
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
-            with open(dataPath + '/' + t + '_' + measurementName + '_' + nRun + '_both_backward.csv', 'a', newline='') as f:
+            with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_both_backward.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(VgBackward[i]),str(I_1.iloc[i,0]),str(I_2.iloc[i,0]),str(I_3.iloc[i,0]),str(I_4.iloc[i,0]),str(I_5.iloc[i,0]),str(I_6.iloc[i,0]),str(I_7.iloc[i,0]),str(I_8.iloc[i,0])])
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
-            fLog.write('Measurement ' + measurementName + '_' + nRun + ' both' + ' finished at: ' + str(datetime.now()) + '\n')
+            fLog.write('Measurement ' + measurementName + '_' + str(nRun) + ' both' + ' finished at: ' + str(datetime.now()) + '\n')
+        print("End sweep: ",nRun)
         nRun += 1
+        GateSweeper.updateGUI()
 
 if __name__ == "__main__":
     # GUI Code
@@ -345,15 +352,15 @@ if __name__ == "__main__":
     root.config(bg="purple")
     assay = tk.Label(root,text=('Assay Number: '+t+'_'+measurementName),bg="purple")
     assay.grid(row=0,column=0,padx=5,pady=5)
-    run = tk.Label(root, text=('Sweep Number: '+str(nRun)),bg="purple")
+    run = tk.Label(root,text=('Sweep Number: '+str(nRun)),bg="purple")
     run.grid(row=1, column=0, padx=5, pady=5)
-    odd_button = tk.Button(root, text='Start odd sweep', command=lambda: GateSweeper.oddStart())
+    odd_button = tk.Button(root,text='Start odd sweep',command=lambda:GateSweeper.oddStart())
     odd_button.grid(row=2, column=0, padx=5, pady=5)
-    even_button = tk.Button(root, text='Start even sweep', command=lambda: GateSweeper.evenStart())
+    even_button = tk.Button(root,text='Start even sweep',command=lambda:GateSweeper.evenStart())
     even_button.grid(row=3, column=0, padx=5, pady=5)
-    both_button = tk.Button(root, text='Start odd+even sweep', command=lambda: GateSweeper.bothStart())
+    both_button = tk.Button(root,text='Start odd+even sweep',command=lambda:GateSweeper.bothStart())
     both_button.grid(row=4, column=0, padx=5, pady=5)
-    switched_button = tk.Button(root, text='Start switched sweep', command=lambda: GateSweeper.switchedStart())
+    switched_button = tk.Button(root,text='Start switched sweep',command=lambda:GateSweeper.switchedStart())
     switched_button.grid(row=5, column=0, padx=5, pady=5)
     exit_button = tk.Button(root,text='End GateSweeper',command=lambda:[GateSweeper.end(),root.quit()])
     exit_button.grid(row=6,column=0,padx=5,pady=5)

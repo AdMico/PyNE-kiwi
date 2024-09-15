@@ -1,0 +1,1 @@
+If you want to stop the program, simply replace this text with 'stop' and save it.

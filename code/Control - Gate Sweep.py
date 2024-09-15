@@ -15,16 +15,13 @@ import os
 import csv
 import pandas as pd
 import GlobalMeasID as ID
-from tkinter import *
 import tkinter as tk
 from Config import basePath,PiBox,B1500ADCSet,B1500NPLC,K2401compl,Diags
 from Config import VgStart,VgStop,VgStep,Settle
 from Config import VS_SMU1,VS_SMU2,VS_SMU3,VS_SMU4
 from Config import B1500ICOM1,B1500ICOM2,B1500ICOM3,B1500ICOM4
 from Config import B1500Filt1,B1500Filt2,B1500Filt3,B1500Filt4
-global CtrlPi,B1500,B2201,K2401,GateSweeper ## Do I need this? -- 15SEP24 APM
-global dataPath,measurementName,t
-global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8
+global nRun
 
 class GateSweep(): # Setting up as a class for later scripting potential -- 10SEP24 APM
     def __init__(self):
@@ -33,10 +30,11 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
         self.type = "GateSweep"  # We can check each instrument for its type and react accordingly
 
     def initialise(self): # Routine to start everything up in the code
+        global CtrlPi,B1500,B2201,K2401
+        global dataPath,measurementName,t
+        global VgForward,VgBackward,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8
         if Diags == "Verbose":
             print("Initialising Instruments")
-        # Initialise class
-        GateSweeper = GateSweep()
         # Initialise instruments
         CtrlPi = PiMUX()
         B1500 = B1500()
@@ -335,22 +333,25 @@ class GateSweep(): # Setting up as a class for later scripting potential -- 10SE
 
 if __name__ == "__main__":
     # GUI Code
+    nRun=0
+    GateSweeper = GateSweep()
+    GateSweeper.initialise()
     root = tk.Tk()
     root.title("Gate Sweeper GUI")
-    root.geometry('1000x500')
+    root.geometry('200x250')
     root.config(bg="purple")
     assay = tk.Label(root,text=('Assay Number: '+t+'_'+measurementName),bg="purple")
     assay.grid(row=0,column=0,padx=5,pady=5)
     run = tk.Label(root, text=('Sweep Number: '+str(nRun)),bg="purple")
     run.grid(row=1, column=0, padx=5, pady=5)
-    odd_button = tk.Button(root, text='Start Run', command=lambda: GateSweeper.oddStart())
-    odd_button.grid(row=1, column=0, padx=5, pady=5)
-    even_button = tk.Button(root, text='Start Run', command=lambda: GateSweeper.evenStart())
-    even_button.grid(row=1, column=1, padx=5, pady=5)
-    both_button = tk.Button(root, text='Start Run', command=lambda: GateSweeper.bothStart())
-    both_button.grid(row=1, column=2, padx=5, pady=5)
-    switched_button = tk.Button(root, text='Start Run', command=lambda: GateSweeper.switchedStart())
-    switched_button.grid(row=1, column=3, padx=5, pady=5)
-    exit_button = tk.Button(root,text='End Program',command=lambda:[end(),root.quit()])
-    exit_button.grid(row=0,column=1,padx=5,pady=5)
+    odd_button = tk.Button(root, text='Start odd sweep', command=lambda: GateSweeper.oddStart())
+    odd_button.grid(row=2, column=0, padx=5, pady=5)
+    even_button = tk.Button(root, text='Start even sweep', command=lambda: GateSweeper.evenStart())
+    even_button.grid(row=3, column=0, padx=5, pady=5)
+    both_button = tk.Button(root, text='Start odd+even sweep', command=lambda: GateSweeper.bothStart())
+    both_button.grid(row=4, column=0, padx=5, pady=5)
+    switched_button = tk.Button(root, text='Start switched sweep', command=lambda: GateSweeper.switchedStart())
+    switched_button.grid(row=5, column=0, padx=5, pady=5)
+    exit_button = tk.Button(root,text='End GateSweeper',command=lambda:[GateSweeper.end(),root.quit()])
+    exit_button.grid(row=6,column=0,padx=5,pady=5)
     root.mainloop()

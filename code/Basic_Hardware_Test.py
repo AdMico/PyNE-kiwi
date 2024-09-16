@@ -19,6 +19,7 @@ from Pi_control import PiMUX
 from K2401 import K2401
 from B1500 import B1500
 from B2201 import B2201
+from Config import HardwareSlow,SlowTime
 
 def smu_run():
     B1500.setV1(0.0)
@@ -34,6 +35,8 @@ def smu_run():
     vol4 = B1500.getV4()
     cur4 = B1500.getI4()
     print("SMU1 I=",cur1,"SMU1 V=",vol1,"SMU2 I=",cur2,"SMU2 V=",vol2,"SMU3 I=",cur3,"SMU3 V=",vol3,"SMU4 I=",cur4,"SMU4 V=",vol4)
+    if HardwareSlow == 'slow':
+        time.sleep(SlowTime)
 
     B1500.setV1(0.1)
     B1500.setV2(0.1)
@@ -48,6 +51,8 @@ def smu_run():
     vol4 = B1500.getV4()
     cur4 = B1500.getI4()
     print("SMU1 I=",cur1,"SMU1 V=",vol1,"SMU2 I=",cur2,"SMU2 V=",vol2,"SMU3 I=",cur3,"SMU3 V=",vol3,"SMU4 I=",cur4,"SMU4 V=",vol4)
+    if HardwareSlow == 'slow':
+        time.sleep(SlowTime)
 
     B1500.setV1(0.2)
     B1500.setV2(0.2)
@@ -62,6 +67,8 @@ def smu_run():
     vol4 = B1500.getV4()
     cur4 = B1500.getI4()
     print("SMU1 I=",cur1,"SMU1 V=",vol1,"SMU2 I=",cur2,"SMU2 V=",vol2,"SMU3 I=",cur3,"SMU3 V=",vol3,"SMU4 I=",cur4,"SMU4 V=",vol4)
+    if HardwareSlow == 'slow':
+        time.sleep(SlowTime)
 
     B1500.setV1(0.3)
     B1500.setV2(0.3)
@@ -76,6 +83,8 @@ def smu_run():
     vol4 = B1500.getV4()
     cur4 = B1500.getI4()
     print("SMU1 I=",cur1,"SMU1 V=",vol1,"SMU2 I=",cur2,"SMU2 V=",vol2,"SMU3 I=",cur3,"SMU3 V=",vol3,"SMU4 I=",cur4,"SMU4 V=",vol4)
+    if HardwareSlow == 'slow':
+        time.sleep(SlowTime)
 
     B1500.setV1(0.0)
     B1500.setV2(0.0)

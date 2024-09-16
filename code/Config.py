@@ -31,7 +31,7 @@ Settle = 1 #s -- Settle time for measurement
 
 # B1500 Settings -- Global
 B1500AutoZero = False
-B1500ADCSet = "HighRes" #Alternatives are HighSpeed and HighRes
+B1500ADCSet = "HighSpeed" #Alternatives are HighSpeed and HighRes
 B1500NPLC = 1 #Takes values from 1 to 100 (Int)
 
 # B1500 Settings -- SMU1 Specific
@@ -82,3 +82,7 @@ B1500Filt4 = False #Default is False, other option is True
 K2401sourceRange = 1
 K2401senseRange = 1.05e-6
 K2401compl = 1.0E-8
+
+# 'Run Slow' option for diagnostics during Basic_Hardware_Test.py
+HardwareSlow = 'fast' #Set to 'slow' for pauses at each voltage in the I-V set or 'fast' to run through without pausing -- 16SEP24 APM
+SlowTime = 3.0 #s this is the pause time at each voltage step if in 'slow' mode -- 16SEP24 APM

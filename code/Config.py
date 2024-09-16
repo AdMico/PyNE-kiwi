@@ -22,12 +22,19 @@ Diags = "Verbose"
 # PyNE-kiwi data settings
 basePath = '../data'
 
+# Universal Sweeper Settings -- Settings that hold for both gate and time sweeper operation
+VS = 0.1 #V -- Settings from Danica's specs 14SEP24 APM (n.b., this sets the B1500 SMU outputs below)
+Settle = 1 #s -- Settle time between odd/even switch and a data pull for measurement
+
 # GateSweeper Settings
 VgStart = -0.5 #V -- Settings from Danica's specs 14SEP24 APM
 VgStop = 1.0 #V -- Settings from Danica's specs 14SEP24 APM
 VgStep = 20E-3 #V -- Settings from Danica's specs 14SEP24 APM
-VS = 0.1 #V -- Settings from Danica's specs 14SEP24 APM (n.b., this sets the B1500 SMU outputs below)
-Settle = 1 #s -- Settle time for measurement
+
+# TimeSweeper Settings
+Vg = 0.0 #V -- Settings from Danica's specs 16SEP24 APM
+SampleWait = 5 #s -- Wait time between time samples, shouldn't be less than 3x Settle
+MaxDuration = 18000 #s -- Max duration for a single trace, needed for setting array sizes
 
 # B1500 Settings -- Global
 B1500AutoZero = False

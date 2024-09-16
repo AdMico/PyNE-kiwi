@@ -160,7 +160,6 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
                 print("Time Iteration: ",i+1," Time: ",time.time())
             iterStart = time.time()
             elapsed.iat[i,0] = time.time()-sweepStart
-            print(elapsed.iat[i,0],sweepStart)
             I_1.iat[i,0] = B1500.getI1()
             I_3.iat[i,0] = B1500.getI2()
             I_5.iat[i,0] = B1500.getI3()

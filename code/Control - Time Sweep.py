@@ -33,7 +33,7 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
 
     def initialise(self): # Routine to start everything up in the code
         global CtrlPi,B1500,B2201,K2401
-        global dataPath,measurementName,t
+        global dataPath,measurementName,t,nTime
         global elapsed,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,I_g
         if Diags == "Verbose":
             print("Initialising Instruments")
@@ -116,6 +116,7 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
         root.update_idletasks()
 
     def timeStart(self):  # Operates the Time Start button in the GUI
+        TimeSweeper.stopFileInit()
         updateThread = threading.Thread(target=TimeSweeper.timeSweep)
         updateThread.daemon = True
         updateThread.start()
@@ -136,7 +137,7 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
         ID.increaseID()
 
     def timeSweep(self): #Sweep with switching from odd to even each gate point
-        global elapsed,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,I_g,nRun
+        global elapsed,I_1,I_2,I_3,I_4,I_5,I_6,I_7,I_8,I_g,nRun,nTime
         if Diags == "Verbose":
             print("Starting time sweep: ",nRun)
         ## Set to odd for start of switched Configuration
@@ -156,34 +157,35 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
         sweepStart = time.time()
         for i in range(nTime):
             if Diags == "Verbose":
-                print("Time Iteration: ",i+1)
+                print("Time Iteration: ",i+1," Time: ",time.time())
             iterStart = time.time()
-            elapsed[i] = time.time()-SweepStart
-            I_1[i] = B1500.getI1()
-            I_3[i] = B1500.getI2()
-            I_5[i] = B1500.getI3()
-            I_7[i] = B1500.getI4()
+            elapsed.iat[i,0] = time.time()-sweepStart
+            print(elapsed.iat[i,0],sweepStart)
+            I_1.iat[i,0] = B1500.getI1()
+            I_3.iat[i,0] = B1500.getI2()
+            I_5.iat[i,0] = B1500.getI3()
+            I_7.iat[i,0] = B1500.getI4()
             CtrlPi.even()
             B2201.even()
             time.sleep(Settle)
-            I_2[i] = B1500.getI1()
-            I_4[i] = B1500.getI2()
-            I_6[i] = B1500.getI3()
-            I_8[i] = B1500.getI4()
-            I_g[i] = K2401._getSenseLevel()
+            I_2.iat[i,0] = B1500.getI1()
+            I_4.iat[i,0] = B1500.getI2()
+            I_6.iat[i,0] = B1500.getI3()
+            I_8.iat[i,0] = B1500.getI4()
+            I_g.iat[i,0] = K2401._getSenseLevel()
             CtrlPi.odd()
             B2201.odd()
             # Check for Stop signal
             with open('stop.txt', 'r') as fStop:
                 r = fStop.read()
                 if r == 'stop':
-                    print('Stop button activated at iteration: ', i)
+                    print('Stop button activated at iteration: ',i+1)
                     break
-            time.sleep(SampleWait-(time.time()-iterStart))
             # send data to file -- Might need to test file name stays open in this setup 14SEP24 APM
             with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_time.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
-                writer.writerow([str(elapsed.iloc[i,0]),str(I_1.iloc[i,0]),str(I_2.iloc[i,0]),str(I_3.iloc[i,0]),str(I_4.iloc[i,0]),str(I_5.iloc[i,0]),str(I_6.iloc[i,0]),str(I_7.iloc[i,0]),str(I_8.iloc[i,0]),str(I_g.iloc[i,0])])
+                writer.writerow([str(elapsed.iat[i,0]),str(I_1.iat[i,0]),str(I_2.iat[i,0]),str(I_3.iat[i,0]),str(I_4.iat[i,0]),str(I_5.iat[i,0]),str(I_6.iat[i,0]),str(I_7.iat[i,0]),str(I_8.iat[i,0]),str(I_g.iat[i,0])])
+            time.sleep(SampleWait - (time.time() - iterStart))
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
             fLog.write('Measurement ' + measurementName + ' Sweep ' + str(nRun) + ' time' + ' finished at: ' + str(datetime.now()) + '\n')
         print("End sweep: ",nRun)
@@ -205,7 +207,7 @@ if __name__ == "__main__":
     run.grid(row=1, column=0, padx=5, pady=5)
     time_button = tk.Button(root,text='Start time sweep',command=lambda:TimeSweeper.timeStart())
     time_button.grid(row=2, column=0, padx=5, pady=5)
-    stop_button = tk.Button(root,text='Stop time sweep',command=lambda:TimeSweeper.timeStopper())
+    stop_button = tk.Button(root,text='Stop time sweep',command=lambda:TimeSweeper.stop())
     stop_button.grid(row=3, column=0, padx=5, pady=5)
     exit_button = tk.Button(root,text='End GateSweeper',command=lambda:[TimeSweeper.end(),root.quit()])
     exit_button.grid(row=6,column=0,padx=5,pady=5)

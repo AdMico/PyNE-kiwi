@@ -90,6 +90,6 @@ K2401sourceRange = 1
 K2401senseRange = 1.05e-6
 K2401compl = 1.0E-8
 
-# 'Run Slow' option for diagnostics during Basic_Hardware_Test.py
+# 'Run Slow' option for diagnostics during Basic Hardware Test.py
 HardwareSlow = 'fast' #Set to 'slow' for pauses at each voltage in the I-V set or 'fast' to run through without pausing -- 16SEP24 APM
 SlowTime = 3.0 #s this is the pause time at each voltage step if in 'slow' mode -- 16SEP24 APM

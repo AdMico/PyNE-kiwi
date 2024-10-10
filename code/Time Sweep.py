@@ -18,6 +18,8 @@ import GlobalMeasID as ID
 import tkinter as tk
 import threading
 import math
+import matplotlib.pyplot as plt
+
 from Config import basePath,PiBox,B1500ADCSet,B1500NPLC,K2401compl,Diags
 from Config import Vg,SampleWait,MaxDuration,Settle
 from Config import VS_SMU1,VS_SMU2,VS_SMU3,VS_SMU4
@@ -116,10 +118,40 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
         root.update_idletasks()
 
     def timeStart(self):  # Operates the Time Start button in the GUI
+        global timex, plotI1, plotI2,plotI3,plotI4,plotI5,plotI6,plotI7,plotI8,plotIg
         TimeSweeper.stopFileInit()
         updateThread = threading.Thread(target=TimeSweeper.timeSweep)
         updateThread.daemon = True
         updateThread.start()
+        #Initialise Live Plotting
+        timex = []
+        plotI1 = []
+        plotI2 = []
+        plotI3 = []
+        plotI4 = []
+        plotI5 = []
+        plotI6 = []
+        plotI7 = []
+        plotI8 = []
+        plotIg = []
+        plot_ys = [plotI1, plotI2,plotI3,plotI4,plotI5,plotI6,plotI7,plotI8,plotIg]
+        plt.figure()
+        ax1 = plt.axes(xlim=(0, 500), ylim=(0, 5e-6))
+        lines = []
+        for index in range(len(plot_ys)):
+            string_current = 'I_{}'.format(index + 1)
+            lnobj = ax1.plot([], [], label=string_current)[0]
+            lines.append(lnobj)
+        plt.xlabel('Time (s)')
+        plt.ylabel('Current (A)')
+        plt.legend()
+        plt.ion()
+        plt.show()
+        while updateThread.is_alive():
+            plt.pause(1)
+            for num, line in enumerate(lines):
+                line.set_data(timex, plot_ys[num])
+            plt.draw()
 
     def end(self):
         if Diags == "Verbose":
@@ -184,6 +216,17 @@ class TimeSweep(): # Setting up as a class for later scripting potential -- 10SE
             with open(dataPath + '/' + t + '_' + measurementName + '_' + str(nRun) + '_time.csv', 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow([str(elapsed.iat[i,0]),str(I_1.iat[i,0]),str(I_2.iat[i,0]),str(I_3.iat[i,0]),str(I_4.iat[i,0]),str(I_5.iat[i,0]),str(I_6.iat[i,0]),str(I_7.iat[i,0]),str(I_8.iat[i,0]),str(I_g.iat[i,0])])
+            #Append readings for live graphing
+            timex.append(elapsed.iat[i,0])
+            plotI1.append(I_1.iat[i,0])
+            plotI2.append(I_2.iat[i,0])
+            plotI3.append(I_3.iat[i,0])
+            plotI4.append(I_4.iat[i,0])
+            plotI5.append(I_5.iat[i,0])
+            plotI6.append(I_6.iat[i,0])
+            plotI7.append(I_7.iat[i,0])
+            plotI8.append(I_8.iat[i,0])
+            plotIg.append(I_g.iat[i,0])
             time.sleep(SampleWait - (time.time() - iterStart))
         with open(dataPath + '/log_' + t + '_' + measurementName + '.txt', 'a') as fLog:
             fLog.write('Measurement ' + measurementName + ' Sweep ' + str(nRun) + ' time' + ' finished at: ' + str(datetime.now()) + '\n')

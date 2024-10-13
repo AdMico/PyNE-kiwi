@@ -251,6 +251,6 @@ if __name__ == "__main__":
     time_button.grid(row=2, column=0, padx=5, pady=5)
     stop_button = tk.Button(root,text='Stop time sweep',command=lambda:TimeSweeper.stop())
     stop_button.grid(row=3, column=0, padx=5, pady=5)
-    exit_button = tk.Button(root,text='End GateSweeper',command=lambda:[TimeSweeper.end(),root.quit()])
+    exit_button = tk.Button(root,text='End time sweep',command=lambda:[TimeSweeper.end(),root.quit()])
     exit_button.grid(row=6,column=0,padx=5,pady=5)
     root.mainloop()
